@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../api/client";
 
 type LoginInput = { email: string; password: string };
+type RegisterRequest = { email: string; username: string; password: string; }
 
 export function useLogin() {
     const qc = useQueryClient();
@@ -20,18 +21,31 @@ export function useLogin() {
 }
 
 export function useLogout() {
-    // const qc = useQueryClient();
+    const qc = useQueryClient();
 
     return useMutation<void, Error, void>({
         mutationFn: () => api.post("/api/auth/logout").then(() => { }),
         onSuccess: () => {
             // Remove user profile cache
-            // qc.removeQueries({ queryKey: ["userProfile"] });
-            // // Remove recipes list & any recipe detail caches
-            // qc.removeQueries({ queryKey: ["recipes"] });
-            // qc.removeQueries({ queryKey: ["recipe"] });
-            // // Remove any in-flight or cached food searches
-            // qc.removeQueries({ queryKey: ["foodSearch"] });
+            qc.removeQueries({ queryKey: ["userProfile"] });
+        },
+    });
+}
+
+export function useRegister() {
+    const qc = useQueryClient();
+    return useMutation<void, Error, RegisterRequest>({
+        mutationFn: (creds) =>
+            api.post("/api/auth/register", creds).then(() => {
+            }
+            ),
+        onSuccess: () => {
+            qc.invalidateQueries({ queryKey: ["userProfile"] });
+            alert("registrerad")
+        }
+        ,
+        onError: (err) => {
+            alert(err.response.data)
         },
     });
 }
