@@ -15,9 +15,3 @@ export function useGodmanProfile() {
         retry: false,
     });
 }
-
-export function useUser() {
-    return {
-        profile: useGodmanProfile(),
-    };
-}
