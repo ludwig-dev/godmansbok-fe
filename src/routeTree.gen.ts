@@ -20,6 +20,11 @@ import { Route as ClientsIndexImport } from './routes/clients/index'
 import { Route as ClientsNewImport } from './routes/clients/new'
 import { Route as ClientsClientIdRouteImport } from './routes/clients/$clientId/route'
 import { Route as ClientsClientIdIndexImport } from './routes/clients/$clientId/index'
+import { Route as ClientsClientIdAccountsRouteImport } from './routes/clients/$clientId/accounts/route'
+import { Route as ClientsClientIdAccountsIndexImport } from './routes/clients/$clientId/accounts/index'
+import { Route as ClientsClientIdAccountsNewImport } from './routes/clients/$clientId/accounts/new'
+import { Route as ClientsClientIdAccountsAccountIdRouteImport } from './routes/clients/$clientId/accounts/$accountId/route'
+import { Route as ClientsClientIdAccountsAccountIdIndexImport } from './routes/clients/$clientId/accounts/$accountId/index'
 
 // Create/Update Routes
 
@@ -76,6 +81,42 @@ const ClientsClientIdIndexRoute = ClientsClientIdIndexImport.update({
   path: '/',
   getParentRoute: () => ClientsClientIdRouteRoute,
 } as any)
+
+const ClientsClientIdAccountsRouteRoute =
+  ClientsClientIdAccountsRouteImport.update({
+    id: '/accounts',
+    path: '/accounts',
+    getParentRoute: () => ClientsClientIdRouteRoute,
+  } as any)
+
+const ClientsClientIdAccountsIndexRoute =
+  ClientsClientIdAccountsIndexImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ClientsClientIdAccountsRouteRoute,
+  } as any)
+
+const ClientsClientIdAccountsNewRoute = ClientsClientIdAccountsNewImport.update(
+  {
+    id: '/new',
+    path: '/new',
+    getParentRoute: () => ClientsClientIdAccountsRouteRoute,
+  } as any,
+)
+
+const ClientsClientIdAccountsAccountIdRouteRoute =
+  ClientsClientIdAccountsAccountIdRouteImport.update({
+    id: '/$accountId',
+    path: '/$accountId',
+    getParentRoute: () => ClientsClientIdAccountsRouteRoute,
+  } as any)
+
+const ClientsClientIdAccountsAccountIdIndexRoute =
+  ClientsClientIdAccountsAccountIdIndexImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ClientsClientIdAccountsAccountIdRouteRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -137,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientsIndexImport
       parentRoute: typeof rootRoute
     }
+    '/clients/$clientId/accounts': {
+      id: '/clients/$clientId/accounts'
+      path: '/accounts'
+      fullPath: '/clients/$clientId/accounts'
+      preLoaderRoute: typeof ClientsClientIdAccountsRouteImport
+      parentRoute: typeof ClientsClientIdRouteImport
+    }
     '/clients/$clientId/': {
       id: '/clients/$clientId/'
       path: '/'
@@ -144,16 +192,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientsClientIdIndexImport
       parentRoute: typeof ClientsClientIdRouteImport
     }
+    '/clients/$clientId/accounts/$accountId': {
+      id: '/clients/$clientId/accounts/$accountId'
+      path: '/$accountId'
+      fullPath: '/clients/$clientId/accounts/$accountId'
+      preLoaderRoute: typeof ClientsClientIdAccountsAccountIdRouteImport
+      parentRoute: typeof ClientsClientIdAccountsRouteImport
+    }
+    '/clients/$clientId/accounts/new': {
+      id: '/clients/$clientId/accounts/new'
+      path: '/new'
+      fullPath: '/clients/$clientId/accounts/new'
+      preLoaderRoute: typeof ClientsClientIdAccountsNewImport
+      parentRoute: typeof ClientsClientIdAccountsRouteImport
+    }
+    '/clients/$clientId/accounts/': {
+      id: '/clients/$clientId/accounts/'
+      path: '/'
+      fullPath: '/clients/$clientId/accounts/'
+      preLoaderRoute: typeof ClientsClientIdAccountsIndexImport
+      parentRoute: typeof ClientsClientIdAccountsRouteImport
+    }
+    '/clients/$clientId/accounts/$accountId/': {
+      id: '/clients/$clientId/accounts/$accountId/'
+      path: '/'
+      fullPath: '/clients/$clientId/accounts/$accountId/'
+      preLoaderRoute: typeof ClientsClientIdAccountsAccountIdIndexImport
+      parentRoute: typeof ClientsClientIdAccountsAccountIdRouteImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface ClientsClientIdAccountsAccountIdRouteRouteChildren {
+  ClientsClientIdAccountsAccountIdIndexRoute: typeof ClientsClientIdAccountsAccountIdIndexRoute
+}
+
+const ClientsClientIdAccountsAccountIdRouteRouteChildren: ClientsClientIdAccountsAccountIdRouteRouteChildren =
+  {
+    ClientsClientIdAccountsAccountIdIndexRoute:
+      ClientsClientIdAccountsAccountIdIndexRoute,
+  }
+
+const ClientsClientIdAccountsAccountIdRouteRouteWithChildren =
+  ClientsClientIdAccountsAccountIdRouteRoute._addFileChildren(
+    ClientsClientIdAccountsAccountIdRouteRouteChildren,
+  )
+
+interface ClientsClientIdAccountsRouteRouteChildren {
+  ClientsClientIdAccountsAccountIdRouteRoute: typeof ClientsClientIdAccountsAccountIdRouteRouteWithChildren
+  ClientsClientIdAccountsNewRoute: typeof ClientsClientIdAccountsNewRoute
+  ClientsClientIdAccountsIndexRoute: typeof ClientsClientIdAccountsIndexRoute
+}
+
+const ClientsClientIdAccountsRouteRouteChildren: ClientsClientIdAccountsRouteRouteChildren =
+  {
+    ClientsClientIdAccountsAccountIdRouteRoute:
+      ClientsClientIdAccountsAccountIdRouteRouteWithChildren,
+    ClientsClientIdAccountsNewRoute: ClientsClientIdAccountsNewRoute,
+    ClientsClientIdAccountsIndexRoute: ClientsClientIdAccountsIndexRoute,
+  }
+
+const ClientsClientIdAccountsRouteRouteWithChildren =
+  ClientsClientIdAccountsRouteRoute._addFileChildren(
+    ClientsClientIdAccountsRouteRouteChildren,
+  )
+
 interface ClientsClientIdRouteRouteChildren {
+  ClientsClientIdAccountsRouteRoute: typeof ClientsClientIdAccountsRouteRouteWithChildren
   ClientsClientIdIndexRoute: typeof ClientsClientIdIndexRoute
 }
 
 const ClientsClientIdRouteRouteChildren: ClientsClientIdRouteRouteChildren = {
+  ClientsClientIdAccountsRouteRoute:
+    ClientsClientIdAccountsRouteRouteWithChildren,
   ClientsClientIdIndexRoute: ClientsClientIdIndexRoute,
 }
 
@@ -169,7 +282,12 @@ export interface FileRoutesByFullPath {
   '/clients/$clientId': typeof ClientsClientIdRouteRouteWithChildren
   '/clients/new': typeof ClientsNewRoute
   '/clients': typeof ClientsIndexRoute
+  '/clients/$clientId/accounts': typeof ClientsClientIdAccountsRouteRouteWithChildren
   '/clients/$clientId/': typeof ClientsClientIdIndexRoute
+  '/clients/$clientId/accounts/$accountId': typeof ClientsClientIdAccountsAccountIdRouteRouteWithChildren
+  '/clients/$clientId/accounts/new': typeof ClientsClientIdAccountsNewRoute
+  '/clients/$clientId/accounts/': typeof ClientsClientIdAccountsIndexRoute
+  '/clients/$clientId/accounts/$accountId/': typeof ClientsClientIdAccountsAccountIdIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -181,6 +299,9 @@ export interface FileRoutesByTo {
   '/clients/new': typeof ClientsNewRoute
   '/clients': typeof ClientsIndexRoute
   '/clients/$clientId': typeof ClientsClientIdIndexRoute
+  '/clients/$clientId/accounts/new': typeof ClientsClientIdAccountsNewRoute
+  '/clients/$clientId/accounts': typeof ClientsClientIdAccountsIndexRoute
+  '/clients/$clientId/accounts/$accountId': typeof ClientsClientIdAccountsAccountIdIndexRoute
 }
 
 export interface FileRoutesById {
@@ -193,7 +314,12 @@ export interface FileRoutesById {
   '/clients/$clientId': typeof ClientsClientIdRouteRouteWithChildren
   '/clients/new': typeof ClientsNewRoute
   '/clients/': typeof ClientsIndexRoute
+  '/clients/$clientId/accounts': typeof ClientsClientIdAccountsRouteRouteWithChildren
   '/clients/$clientId/': typeof ClientsClientIdIndexRoute
+  '/clients/$clientId/accounts/$accountId': typeof ClientsClientIdAccountsAccountIdRouteRouteWithChildren
+  '/clients/$clientId/accounts/new': typeof ClientsClientIdAccountsNewRoute
+  '/clients/$clientId/accounts/': typeof ClientsClientIdAccountsIndexRoute
+  '/clients/$clientId/accounts/$accountId/': typeof ClientsClientIdAccountsAccountIdIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -207,7 +333,12 @@ export interface FileRouteTypes {
     | '/clients/$clientId'
     | '/clients/new'
     | '/clients'
+    | '/clients/$clientId/accounts'
     | '/clients/$clientId/'
+    | '/clients/$clientId/accounts/$accountId'
+    | '/clients/$clientId/accounts/new'
+    | '/clients/$clientId/accounts/'
+    | '/clients/$clientId/accounts/$accountId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -218,6 +349,9 @@ export interface FileRouteTypes {
     | '/clients/new'
     | '/clients'
     | '/clients/$clientId'
+    | '/clients/$clientId/accounts/new'
+    | '/clients/$clientId/accounts'
+    | '/clients/$clientId/accounts/$accountId'
   id:
     | '__root__'
     | '/'
@@ -228,7 +362,12 @@ export interface FileRouteTypes {
     | '/clients/$clientId'
     | '/clients/new'
     | '/clients/'
+    | '/clients/$clientId/accounts'
     | '/clients/$clientId/'
+    | '/clients/$clientId/accounts/$accountId'
+    | '/clients/$clientId/accounts/new'
+    | '/clients/$clientId/accounts/'
+    | '/clients/$clientId/accounts/$accountId/'
   fileRoutesById: FileRoutesById
 }
 
@@ -292,6 +431,7 @@ export const routeTree = rootRoute
     "/clients/$clientId": {
       "filePath": "clients/$clientId/route.tsx",
       "children": [
+        "/clients/$clientId/accounts",
         "/clients/$clientId/"
       ]
     },
@@ -301,9 +441,37 @@ export const routeTree = rootRoute
     "/clients/": {
       "filePath": "clients/index.tsx"
     },
+    "/clients/$clientId/accounts": {
+      "filePath": "clients/$clientId/accounts/route.tsx",
+      "parent": "/clients/$clientId",
+      "children": [
+        "/clients/$clientId/accounts/$accountId",
+        "/clients/$clientId/accounts/new",
+        "/clients/$clientId/accounts/"
+      ]
+    },
     "/clients/$clientId/": {
       "filePath": "clients/$clientId/index.tsx",
       "parent": "/clients/$clientId"
+    },
+    "/clients/$clientId/accounts/$accountId": {
+      "filePath": "clients/$clientId/accounts/$accountId/route.tsx",
+      "parent": "/clients/$clientId/accounts",
+      "children": [
+        "/clients/$clientId/accounts/$accountId/"
+      ]
+    },
+    "/clients/$clientId/accounts/new": {
+      "filePath": "clients/$clientId/accounts/new.tsx",
+      "parent": "/clients/$clientId/accounts"
+    },
+    "/clients/$clientId/accounts/": {
+      "filePath": "clients/$clientId/accounts/index.tsx",
+      "parent": "/clients/$clientId/accounts"
+    },
+    "/clients/$clientId/accounts/$accountId/": {
+      "filePath": "clients/$clientId/accounts/$accountId/index.tsx",
+      "parent": "/clients/$clientId/accounts/$accountId"
     }
   }
 }
