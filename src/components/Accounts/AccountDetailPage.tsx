@@ -101,14 +101,14 @@ export default function AccountDetailPage() {
         </div>
         <button
           type="submit"
-          disabled={updateAccount.isLoading}
+          disabled={updateAccount.isPending}
           className={`w-full flex justify-center items-center px-4 py-2 text-white font-medium rounded ${
-            updateAccount.isLoading
+            updateAccount.isPending
               ? "bg-green-300 cursor-not-allowed"
               : "bg-green-600 hover:bg-green-700"
           } focus:outline-none focus:ring-2 focus:ring-green-500`}
         >
-          {updateAccount.isLoading ? "Sparar…" : "Spara ändringar"}
+          {updateAccount.isPending ? "Sparar…" : "Spara ändringar"}
         </button>
 
         {updateAccount.isError && (

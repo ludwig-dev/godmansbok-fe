@@ -53,7 +53,13 @@ export default function AccountsListPage() {
                 to={`/clients/${cid}/accounts/${account.id}`}
                 className="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600"
               >
-                Öppna
+                Ändra
+              </Link>
+              <Link
+                to={`/clients/${cid}/accounts/${account.id}/transactions`}
+                className="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              >
+                Transaktioner
               </Link>
             </li>
           ))}
