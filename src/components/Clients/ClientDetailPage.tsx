@@ -10,7 +10,7 @@ export default function ClientDetailPage() {
   return (
     <div className="space-y-6">
       <p className="text-gray-700">
-        Detta är översiktssidan för klientID: {id}. Härifrån kan du:
+        Detta är översiktssidan för Huvudman: {id}. Härifrån kan du:
       </p>
       <div className="flex flex-wrap gap-4">
         <button

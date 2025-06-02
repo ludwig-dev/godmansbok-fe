@@ -32,7 +32,7 @@ export default function ClientsListPage() {
           onClick={() => navigate({ to: "/clients/new" })}
           className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          + Ny klient
+          + Ny Huvudman
         </button>
       </header>
 
