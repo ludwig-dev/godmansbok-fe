@@ -15,7 +15,11 @@ import { Route as RegisterImport } from './routes/register'
 import { Route as ProfileImport } from './routes/profile'
 import { Route as LoginImport } from './routes/login'
 import { Route as AboutImport } from './routes/about'
+import { Route as ClientsRouteImport } from './routes/clients/route'
 import { Route as IndexImport } from './routes/index'
+import { Route as ClientsIndexImport } from './routes/clients/index'
+import { Route as ClientsNewImport } from './routes/clients/new'
+import { Route as ClientsClientIdImport } from './routes/clients/$clientId'
 
 // Create/Update Routes
 
@@ -43,10 +47,34 @@ const AboutRoute = AboutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ClientsRouteRoute = ClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const ClientsIndexRoute = ClientsIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ClientsRouteRoute,
+} as any)
+
+const ClientsNewRoute = ClientsNewImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => ClientsRouteRoute,
+} as any)
+
+const ClientsClientIdRoute = ClientsClientIdImport.update({
+  id: '/$clientId',
+  path: '/$clientId',
+  getParentRoute: () => ClientsRouteRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -58,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/clients': {
+      id: '/clients'
+      path: '/clients'
+      fullPath: '/clients'
+      preLoaderRoute: typeof ClientsRouteImport
       parentRoute: typeof rootRoute
     }
     '/about': {
@@ -88,17 +123,58 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterImport
       parentRoute: typeof rootRoute
     }
+    '/clients/$clientId': {
+      id: '/clients/$clientId'
+      path: '/$clientId'
+      fullPath: '/clients/$clientId'
+      preLoaderRoute: typeof ClientsClientIdImport
+      parentRoute: typeof ClientsRouteImport
+    }
+    '/clients/new': {
+      id: '/clients/new'
+      path: '/new'
+      fullPath: '/clients/new'
+      preLoaderRoute: typeof ClientsNewImport
+      parentRoute: typeof ClientsRouteImport
+    }
+    '/clients/': {
+      id: '/clients/'
+      path: '/'
+      fullPath: '/clients/'
+      preLoaderRoute: typeof ClientsIndexImport
+      parentRoute: typeof ClientsRouteImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface ClientsRouteRouteChildren {
+  ClientsClientIdRoute: typeof ClientsClientIdRoute
+  ClientsNewRoute: typeof ClientsNewRoute
+  ClientsIndexRoute: typeof ClientsIndexRoute
+}
+
+const ClientsRouteRouteChildren: ClientsRouteRouteChildren = {
+  ClientsClientIdRoute: ClientsClientIdRoute,
+  ClientsNewRoute: ClientsNewRoute,
+  ClientsIndexRoute: ClientsIndexRoute,
+}
+
+const ClientsRouteRouteWithChildren = ClientsRouteRoute._addFileChildren(
+  ClientsRouteRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/clients': typeof ClientsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/clients/$clientId': typeof ClientsClientIdRoute
+  '/clients/new': typeof ClientsNewRoute
+  '/clients/': typeof ClientsIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -107,28 +183,63 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/clients/$clientId': typeof ClientsClientIdRoute
+  '/clients/new': typeof ClientsNewRoute
+  '/clients': typeof ClientsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/clients': typeof ClientsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/clients/$clientId': typeof ClientsClientIdRoute
+  '/clients/new': typeof ClientsNewRoute
+  '/clients/': typeof ClientsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/login' | '/profile' | '/register'
+  fullPaths:
+    | '/'
+    | '/clients'
+    | '/about'
+    | '/login'
+    | '/profile'
+    | '/register'
+    | '/clients/$clientId'
+    | '/clients/new'
+    | '/clients/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/login' | '/profile' | '/register'
-  id: '__root__' | '/' | '/about' | '/login' | '/profile' | '/register'
+  to:
+    | '/'
+    | '/about'
+    | '/login'
+    | '/profile'
+    | '/register'
+    | '/clients/$clientId'
+    | '/clients/new'
+    | '/clients'
+  id:
+    | '__root__'
+    | '/'
+    | '/clients'
+    | '/about'
+    | '/login'
+    | '/profile'
+    | '/register'
+    | '/clients/$clientId'
+    | '/clients/new'
+    | '/clients/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ClientsRouteRoute: typeof ClientsRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
@@ -137,6 +248,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ClientsRouteRoute: ClientsRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
@@ -154,6 +266,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/clients",
         "/about",
         "/login",
         "/profile",
@@ -162,6 +275,14 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/clients": {
+      "filePath": "clients/route.tsx",
+      "children": [
+        "/clients/$clientId",
+        "/clients/new",
+        "/clients/"
+      ]
     },
     "/about": {
       "filePath": "about.tsx"
@@ -174,6 +295,18 @@ export const routeTree = rootRoute
     },
     "/register": {
       "filePath": "register.tsx"
+    },
+    "/clients/$clientId": {
+      "filePath": "clients/$clientId.tsx",
+      "parent": "/clients"
+    },
+    "/clients/new": {
+      "filePath": "clients/new.tsx",
+      "parent": "/clients"
+    },
+    "/clients/": {
+      "filePath": "clients/index.tsx",
+      "parent": "/clients"
     }
   }
 }
