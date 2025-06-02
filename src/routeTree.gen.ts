@@ -20,10 +20,15 @@ import { Route as ClientsIndexImport } from './routes/clients/index'
 import { Route as ClientsNewImport } from './routes/clients/new'
 import { Route as ClientsClientIdRouteImport } from './routes/clients/$clientId/route'
 import { Route as ClientsClientIdIndexImport } from './routes/clients/$clientId/index'
+import { Route as ClientsClientIdOtherAssetsRouteImport } from './routes/clients/$clientId/other-assets/route'
 import { Route as ClientsClientIdAccountsRouteImport } from './routes/clients/$clientId/accounts/route'
+import { Route as ClientsClientIdOtherAssetsIndexImport } from './routes/clients/$clientId/other-assets/index'
 import { Route as ClientsClientIdAccountsIndexImport } from './routes/clients/$clientId/accounts/index'
+import { Route as ClientsClientIdOtherAssetsNewImport } from './routes/clients/$clientId/other-assets/new'
 import { Route as ClientsClientIdAccountsNewImport } from './routes/clients/$clientId/accounts/new'
+import { Route as ClientsClientIdOtherAssetsAssetIdRouteImport } from './routes/clients/$clientId/other-assets/$assetId/route'
 import { Route as ClientsClientIdAccountsAccountIdRouteImport } from './routes/clients/$clientId/accounts/$accountId/route'
+import { Route as ClientsClientIdOtherAssetsAssetIdIndexImport } from './routes/clients/$clientId/other-assets/$assetId/index'
 import { Route as ClientsClientIdAccountsAccountIdIndexImport } from './routes/clients/$clientId/accounts/$accountId/index'
 import { Route as ClientsClientIdAccountsAccountIdTransactionsRouteImport } from './routes/clients/$clientId/accounts/$accountId/transactions/route'
 import { Route as ClientsClientIdAccountsAccountIdTransactionsIndexImport } from './routes/clients/$clientId/accounts/$accountId/transactions/index'
@@ -87,6 +92,13 @@ const ClientsClientIdIndexRoute = ClientsClientIdIndexImport.update({
   getParentRoute: () => ClientsClientIdRouteRoute,
 } as any)
 
+const ClientsClientIdOtherAssetsRouteRoute =
+  ClientsClientIdOtherAssetsRouteImport.update({
+    id: '/other-assets',
+    path: '/other-assets',
+    getParentRoute: () => ClientsClientIdRouteRoute,
+  } as any)
+
 const ClientsClientIdAccountsRouteRoute =
   ClientsClientIdAccountsRouteImport.update({
     id: '/accounts',
@@ -94,11 +106,25 @@ const ClientsClientIdAccountsRouteRoute =
     getParentRoute: () => ClientsClientIdRouteRoute,
   } as any)
 
+const ClientsClientIdOtherAssetsIndexRoute =
+  ClientsClientIdOtherAssetsIndexImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ClientsClientIdOtherAssetsRouteRoute,
+  } as any)
+
 const ClientsClientIdAccountsIndexRoute =
   ClientsClientIdAccountsIndexImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => ClientsClientIdAccountsRouteRoute,
+  } as any)
+
+const ClientsClientIdOtherAssetsNewRoute =
+  ClientsClientIdOtherAssetsNewImport.update({
+    id: '/new',
+    path: '/new',
+    getParentRoute: () => ClientsClientIdOtherAssetsRouteRoute,
   } as any)
 
 const ClientsClientIdAccountsNewRoute = ClientsClientIdAccountsNewImport.update(
@@ -109,11 +135,25 @@ const ClientsClientIdAccountsNewRoute = ClientsClientIdAccountsNewImport.update(
   } as any,
 )
 
+const ClientsClientIdOtherAssetsAssetIdRouteRoute =
+  ClientsClientIdOtherAssetsAssetIdRouteImport.update({
+    id: '/$assetId',
+    path: '/$assetId',
+    getParentRoute: () => ClientsClientIdOtherAssetsRouteRoute,
+  } as any)
+
 const ClientsClientIdAccountsAccountIdRouteRoute =
   ClientsClientIdAccountsAccountIdRouteImport.update({
     id: '/$accountId',
     path: '/$accountId',
     getParentRoute: () => ClientsClientIdAccountsRouteRoute,
+  } as any)
+
+const ClientsClientIdOtherAssetsAssetIdIndexRoute =
+  ClientsClientIdOtherAssetsAssetIdIndexImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ClientsClientIdOtherAssetsAssetIdRouteRoute,
   } as any)
 
 const ClientsClientIdAccountsAccountIdIndexRoute =
@@ -229,6 +269,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientsClientIdAccountsRouteImport
       parentRoute: typeof ClientsClientIdRouteImport
     }
+    '/clients/$clientId/other-assets': {
+      id: '/clients/$clientId/other-assets'
+      path: '/other-assets'
+      fullPath: '/clients/$clientId/other-assets'
+      preLoaderRoute: typeof ClientsClientIdOtherAssetsRouteImport
+      parentRoute: typeof ClientsClientIdRouteImport
+    }
     '/clients/$clientId/': {
       id: '/clients/$clientId/'
       path: '/'
@@ -243,6 +290,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientsClientIdAccountsAccountIdRouteImport
       parentRoute: typeof ClientsClientIdAccountsRouteImport
     }
+    '/clients/$clientId/other-assets/$assetId': {
+      id: '/clients/$clientId/other-assets/$assetId'
+      path: '/$assetId'
+      fullPath: '/clients/$clientId/other-assets/$assetId'
+      preLoaderRoute: typeof ClientsClientIdOtherAssetsAssetIdRouteImport
+      parentRoute: typeof ClientsClientIdOtherAssetsRouteImport
+    }
     '/clients/$clientId/accounts/new': {
       id: '/clients/$clientId/accounts/new'
       path: '/new'
@@ -250,12 +304,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientsClientIdAccountsNewImport
       parentRoute: typeof ClientsClientIdAccountsRouteImport
     }
+    '/clients/$clientId/other-assets/new': {
+      id: '/clients/$clientId/other-assets/new'
+      path: '/new'
+      fullPath: '/clients/$clientId/other-assets/new'
+      preLoaderRoute: typeof ClientsClientIdOtherAssetsNewImport
+      parentRoute: typeof ClientsClientIdOtherAssetsRouteImport
+    }
     '/clients/$clientId/accounts/': {
       id: '/clients/$clientId/accounts/'
       path: '/'
       fullPath: '/clients/$clientId/accounts/'
       preLoaderRoute: typeof ClientsClientIdAccountsIndexImport
       parentRoute: typeof ClientsClientIdAccountsRouteImport
+    }
+    '/clients/$clientId/other-assets/': {
+      id: '/clients/$clientId/other-assets/'
+      path: '/'
+      fullPath: '/clients/$clientId/other-assets/'
+      preLoaderRoute: typeof ClientsClientIdOtherAssetsIndexImport
+      parentRoute: typeof ClientsClientIdOtherAssetsRouteImport
     }
     '/clients/$clientId/accounts/$accountId/transactions': {
       id: '/clients/$clientId/accounts/$accountId/transactions'
@@ -270,6 +338,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/clients/$clientId/accounts/$accountId/'
       preLoaderRoute: typeof ClientsClientIdAccountsAccountIdIndexImport
       parentRoute: typeof ClientsClientIdAccountsAccountIdRouteImport
+    }
+    '/clients/$clientId/other-assets/$assetId/': {
+      id: '/clients/$clientId/other-assets/$assetId/'
+      path: '/'
+      fullPath: '/clients/$clientId/other-assets/$assetId/'
+      preLoaderRoute: typeof ClientsClientIdOtherAssetsAssetIdIndexImport
+      parentRoute: typeof ClientsClientIdOtherAssetsAssetIdRouteImport
     }
     '/clients/$clientId/accounts/$accountId/transactions/$transactionId': {
       id: '/clients/$clientId/accounts/$accountId/transactions/$transactionId'
@@ -377,14 +452,51 @@ const ClientsClientIdAccountsRouteRouteWithChildren =
     ClientsClientIdAccountsRouteRouteChildren,
   )
 
+interface ClientsClientIdOtherAssetsAssetIdRouteRouteChildren {
+  ClientsClientIdOtherAssetsAssetIdIndexRoute: typeof ClientsClientIdOtherAssetsAssetIdIndexRoute
+}
+
+const ClientsClientIdOtherAssetsAssetIdRouteRouteChildren: ClientsClientIdOtherAssetsAssetIdRouteRouteChildren =
+  {
+    ClientsClientIdOtherAssetsAssetIdIndexRoute:
+      ClientsClientIdOtherAssetsAssetIdIndexRoute,
+  }
+
+const ClientsClientIdOtherAssetsAssetIdRouteRouteWithChildren =
+  ClientsClientIdOtherAssetsAssetIdRouteRoute._addFileChildren(
+    ClientsClientIdOtherAssetsAssetIdRouteRouteChildren,
+  )
+
+interface ClientsClientIdOtherAssetsRouteRouteChildren {
+  ClientsClientIdOtherAssetsAssetIdRouteRoute: typeof ClientsClientIdOtherAssetsAssetIdRouteRouteWithChildren
+  ClientsClientIdOtherAssetsNewRoute: typeof ClientsClientIdOtherAssetsNewRoute
+  ClientsClientIdOtherAssetsIndexRoute: typeof ClientsClientIdOtherAssetsIndexRoute
+}
+
+const ClientsClientIdOtherAssetsRouteRouteChildren: ClientsClientIdOtherAssetsRouteRouteChildren =
+  {
+    ClientsClientIdOtherAssetsAssetIdRouteRoute:
+      ClientsClientIdOtherAssetsAssetIdRouteRouteWithChildren,
+    ClientsClientIdOtherAssetsNewRoute: ClientsClientIdOtherAssetsNewRoute,
+    ClientsClientIdOtherAssetsIndexRoute: ClientsClientIdOtherAssetsIndexRoute,
+  }
+
+const ClientsClientIdOtherAssetsRouteRouteWithChildren =
+  ClientsClientIdOtherAssetsRouteRoute._addFileChildren(
+    ClientsClientIdOtherAssetsRouteRouteChildren,
+  )
+
 interface ClientsClientIdRouteRouteChildren {
   ClientsClientIdAccountsRouteRoute: typeof ClientsClientIdAccountsRouteRouteWithChildren
+  ClientsClientIdOtherAssetsRouteRoute: typeof ClientsClientIdOtherAssetsRouteRouteWithChildren
   ClientsClientIdIndexRoute: typeof ClientsClientIdIndexRoute
 }
 
 const ClientsClientIdRouteRouteChildren: ClientsClientIdRouteRouteChildren = {
   ClientsClientIdAccountsRouteRoute:
     ClientsClientIdAccountsRouteRouteWithChildren,
+  ClientsClientIdOtherAssetsRouteRoute:
+    ClientsClientIdOtherAssetsRouteRouteWithChildren,
   ClientsClientIdIndexRoute: ClientsClientIdIndexRoute,
 }
 
@@ -401,12 +513,17 @@ export interface FileRoutesByFullPath {
   '/clients/new': typeof ClientsNewRoute
   '/clients': typeof ClientsIndexRoute
   '/clients/$clientId/accounts': typeof ClientsClientIdAccountsRouteRouteWithChildren
+  '/clients/$clientId/other-assets': typeof ClientsClientIdOtherAssetsRouteRouteWithChildren
   '/clients/$clientId/': typeof ClientsClientIdIndexRoute
   '/clients/$clientId/accounts/$accountId': typeof ClientsClientIdAccountsAccountIdRouteRouteWithChildren
+  '/clients/$clientId/other-assets/$assetId': typeof ClientsClientIdOtherAssetsAssetIdRouteRouteWithChildren
   '/clients/$clientId/accounts/new': typeof ClientsClientIdAccountsNewRoute
+  '/clients/$clientId/other-assets/new': typeof ClientsClientIdOtherAssetsNewRoute
   '/clients/$clientId/accounts/': typeof ClientsClientIdAccountsIndexRoute
+  '/clients/$clientId/other-assets/': typeof ClientsClientIdOtherAssetsIndexRoute
   '/clients/$clientId/accounts/$accountId/transactions': typeof ClientsClientIdAccountsAccountIdTransactionsRouteRouteWithChildren
   '/clients/$clientId/accounts/$accountId/': typeof ClientsClientIdAccountsAccountIdIndexRoute
+  '/clients/$clientId/other-assets/$assetId/': typeof ClientsClientIdOtherAssetsAssetIdIndexRoute
   '/clients/$clientId/accounts/$accountId/transactions/$transactionId': typeof ClientsClientIdAccountsAccountIdTransactionsTransactionIdRouteRouteWithChildren
   '/clients/$clientId/accounts/$accountId/transactions/new': typeof ClientsClientIdAccountsAccountIdTransactionsNewRoute
   '/clients/$clientId/accounts/$accountId/transactions/': typeof ClientsClientIdAccountsAccountIdTransactionsIndexRoute
@@ -423,8 +540,11 @@ export interface FileRoutesByTo {
   '/clients': typeof ClientsIndexRoute
   '/clients/$clientId': typeof ClientsClientIdIndexRoute
   '/clients/$clientId/accounts/new': typeof ClientsClientIdAccountsNewRoute
+  '/clients/$clientId/other-assets/new': typeof ClientsClientIdOtherAssetsNewRoute
   '/clients/$clientId/accounts': typeof ClientsClientIdAccountsIndexRoute
+  '/clients/$clientId/other-assets': typeof ClientsClientIdOtherAssetsIndexRoute
   '/clients/$clientId/accounts/$accountId': typeof ClientsClientIdAccountsAccountIdIndexRoute
+  '/clients/$clientId/other-assets/$assetId': typeof ClientsClientIdOtherAssetsAssetIdIndexRoute
   '/clients/$clientId/accounts/$accountId/transactions/new': typeof ClientsClientIdAccountsAccountIdTransactionsNewRoute
   '/clients/$clientId/accounts/$accountId/transactions': typeof ClientsClientIdAccountsAccountIdTransactionsIndexRoute
   '/clients/$clientId/accounts/$accountId/transactions/$transactionId': typeof ClientsClientIdAccountsAccountIdTransactionsTransactionIdIndexRoute
@@ -441,12 +561,17 @@ export interface FileRoutesById {
   '/clients/new': typeof ClientsNewRoute
   '/clients/': typeof ClientsIndexRoute
   '/clients/$clientId/accounts': typeof ClientsClientIdAccountsRouteRouteWithChildren
+  '/clients/$clientId/other-assets': typeof ClientsClientIdOtherAssetsRouteRouteWithChildren
   '/clients/$clientId/': typeof ClientsClientIdIndexRoute
   '/clients/$clientId/accounts/$accountId': typeof ClientsClientIdAccountsAccountIdRouteRouteWithChildren
+  '/clients/$clientId/other-assets/$assetId': typeof ClientsClientIdOtherAssetsAssetIdRouteRouteWithChildren
   '/clients/$clientId/accounts/new': typeof ClientsClientIdAccountsNewRoute
+  '/clients/$clientId/other-assets/new': typeof ClientsClientIdOtherAssetsNewRoute
   '/clients/$clientId/accounts/': typeof ClientsClientIdAccountsIndexRoute
+  '/clients/$clientId/other-assets/': typeof ClientsClientIdOtherAssetsIndexRoute
   '/clients/$clientId/accounts/$accountId/transactions': typeof ClientsClientIdAccountsAccountIdTransactionsRouteRouteWithChildren
   '/clients/$clientId/accounts/$accountId/': typeof ClientsClientIdAccountsAccountIdIndexRoute
+  '/clients/$clientId/other-assets/$assetId/': typeof ClientsClientIdOtherAssetsAssetIdIndexRoute
   '/clients/$clientId/accounts/$accountId/transactions/$transactionId': typeof ClientsClientIdAccountsAccountIdTransactionsTransactionIdRouteRouteWithChildren
   '/clients/$clientId/accounts/$accountId/transactions/new': typeof ClientsClientIdAccountsAccountIdTransactionsNewRoute
   '/clients/$clientId/accounts/$accountId/transactions/': typeof ClientsClientIdAccountsAccountIdTransactionsIndexRoute
@@ -465,12 +590,17 @@ export interface FileRouteTypes {
     | '/clients/new'
     | '/clients'
     | '/clients/$clientId/accounts'
+    | '/clients/$clientId/other-assets'
     | '/clients/$clientId/'
     | '/clients/$clientId/accounts/$accountId'
+    | '/clients/$clientId/other-assets/$assetId'
     | '/clients/$clientId/accounts/new'
+    | '/clients/$clientId/other-assets/new'
     | '/clients/$clientId/accounts/'
+    | '/clients/$clientId/other-assets/'
     | '/clients/$clientId/accounts/$accountId/transactions'
     | '/clients/$clientId/accounts/$accountId/'
+    | '/clients/$clientId/other-assets/$assetId/'
     | '/clients/$clientId/accounts/$accountId/transactions/$transactionId'
     | '/clients/$clientId/accounts/$accountId/transactions/new'
     | '/clients/$clientId/accounts/$accountId/transactions/'
@@ -486,8 +616,11 @@ export interface FileRouteTypes {
     | '/clients'
     | '/clients/$clientId'
     | '/clients/$clientId/accounts/new'
+    | '/clients/$clientId/other-assets/new'
     | '/clients/$clientId/accounts'
+    | '/clients/$clientId/other-assets'
     | '/clients/$clientId/accounts/$accountId'
+    | '/clients/$clientId/other-assets/$assetId'
     | '/clients/$clientId/accounts/$accountId/transactions/new'
     | '/clients/$clientId/accounts/$accountId/transactions'
     | '/clients/$clientId/accounts/$accountId/transactions/$transactionId'
@@ -502,12 +635,17 @@ export interface FileRouteTypes {
     | '/clients/new'
     | '/clients/'
     | '/clients/$clientId/accounts'
+    | '/clients/$clientId/other-assets'
     | '/clients/$clientId/'
     | '/clients/$clientId/accounts/$accountId'
+    | '/clients/$clientId/other-assets/$assetId'
     | '/clients/$clientId/accounts/new'
+    | '/clients/$clientId/other-assets/new'
     | '/clients/$clientId/accounts/'
+    | '/clients/$clientId/other-assets/'
     | '/clients/$clientId/accounts/$accountId/transactions'
     | '/clients/$clientId/accounts/$accountId/'
+    | '/clients/$clientId/other-assets/$assetId/'
     | '/clients/$clientId/accounts/$accountId/transactions/$transactionId'
     | '/clients/$clientId/accounts/$accountId/transactions/new'
     | '/clients/$clientId/accounts/$accountId/transactions/'
@@ -576,6 +714,7 @@ export const routeTree = rootRoute
       "filePath": "clients/$clientId/route.tsx",
       "children": [
         "/clients/$clientId/accounts",
+        "/clients/$clientId/other-assets",
         "/clients/$clientId/"
       ]
     },
@@ -594,6 +733,15 @@ export const routeTree = rootRoute
         "/clients/$clientId/accounts/"
       ]
     },
+    "/clients/$clientId/other-assets": {
+      "filePath": "clients/$clientId/other-assets/route.tsx",
+      "parent": "/clients/$clientId",
+      "children": [
+        "/clients/$clientId/other-assets/$assetId",
+        "/clients/$clientId/other-assets/new",
+        "/clients/$clientId/other-assets/"
+      ]
+    },
     "/clients/$clientId/": {
       "filePath": "clients/$clientId/index.tsx",
       "parent": "/clients/$clientId"
@@ -606,13 +754,28 @@ export const routeTree = rootRoute
         "/clients/$clientId/accounts/$accountId/"
       ]
     },
+    "/clients/$clientId/other-assets/$assetId": {
+      "filePath": "clients/$clientId/other-assets/$assetId/route.tsx",
+      "parent": "/clients/$clientId/other-assets",
+      "children": [
+        "/clients/$clientId/other-assets/$assetId/"
+      ]
+    },
     "/clients/$clientId/accounts/new": {
       "filePath": "clients/$clientId/accounts/new.tsx",
       "parent": "/clients/$clientId/accounts"
     },
+    "/clients/$clientId/other-assets/new": {
+      "filePath": "clients/$clientId/other-assets/new.tsx",
+      "parent": "/clients/$clientId/other-assets"
+    },
     "/clients/$clientId/accounts/": {
       "filePath": "clients/$clientId/accounts/index.tsx",
       "parent": "/clients/$clientId/accounts"
+    },
+    "/clients/$clientId/other-assets/": {
+      "filePath": "clients/$clientId/other-assets/index.tsx",
+      "parent": "/clients/$clientId/other-assets"
     },
     "/clients/$clientId/accounts/$accountId/transactions": {
       "filePath": "clients/$clientId/accounts/$accountId/transactions/route.tsx",
@@ -626,6 +789,10 @@ export const routeTree = rootRoute
     "/clients/$clientId/accounts/$accountId/": {
       "filePath": "clients/$clientId/accounts/$accountId/index.tsx",
       "parent": "/clients/$clientId/accounts/$accountId"
+    },
+    "/clients/$clientId/other-assets/$assetId/": {
+      "filePath": "clients/$clientId/other-assets/$assetId/index.tsx",
+      "parent": "/clients/$clientId/other-assets/$assetId"
     },
     "/clients/$clientId/accounts/$accountId/transactions/$transactionId": {
       "filePath": "clients/$clientId/accounts/$accountId/transactions/$transactionId/route.tsx",
