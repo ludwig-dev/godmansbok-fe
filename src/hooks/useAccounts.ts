@@ -2,11 +2,13 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../api/client";
 
-export interface AccountDTO {
+export type AccountDTO = {
   id: number;
   accountName: string;
-  accountNumber?: string;
-}
+  accountNumber: string | null;
+  startBalance: number | null;
+  endBalance: number | null;
+};
 
 // Hämta alla konton för en klient (GET /api/clients/:clientId/accounts)
 export function useAccounts(clientId: number) {

@@ -1,11 +1,11 @@
 // src/components/Accounts/AccountDetailPage.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Route } from "../../routes/clients/$clientId/accounts/$accountId/route";
 import { useAccount, useUpdateAccount } from "../../hooks/useAccounts";
 
 export default function AccountDetailPage() {
-  // 1) Hämta clientId och accountId från just denna rutt: "$accountId/route.tsx"
+  // 1) Hämta clientId och accountId från denna rutt
   const { clientId, accountId } = Route.useParams<{
     clientId: string;
     accountId: string;
@@ -16,18 +16,29 @@ export default function AccountDetailPage() {
 
   // 2) Hook för att läsa in konto‐data
   const { data: account, isLoading, isError } = useAccount(cid, aid);
-  // 3) Hook för att uppdatera kontodata
+  // 3) Hook för att uppdatera kontodata (inklusive startBalance, endBalance, year)
   const updateAccount = useUpdateAccount(cid, aid);
 
   // Lokala state‐variabler för redigeringsform
   const [editName, setEditName] = useState("");
   const [editNumber, setEditNumber] = useState("");
+  const [startBalance, setStartBalance] = useState<string>("");
+  const [endBalance, setEndBalance] = useState<string>("");
 
-  // Startvärdena fyller vi först när kontot är inläst
-  React.useEffect(() => {
+  // När kontot laddas: förifyll formuläret
+  useEffect(() => {
     if (account) {
+      console.log("Fetched account:", account);
       setEditName(account.accountName);
       setEditNumber(account.accountNumber || "");
+      console.log("Start Balance:", account.startBalance);
+      console.log("End Balance:", account.endBalance);
+      setStartBalance(
+        account.startBalance !== null ? account.startBalance.toString() : ""
+      );
+      setEndBalance(
+        account.endBalance !== null ? account.endBalance.toString() : ""
+      );
     }
   }, [account]);
 
@@ -38,20 +49,29 @@ export default function AccountDetailPage() {
     return <p className="text-red-500 py-6">Kontot hittades inte</p>;
   }
 
-  // Funktion för att spara ändringar
+  // 4) Funktion för att spara ändringar
   const handleUpdate = (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!editName.trim()) {
       alert("Kontonamn får inte vara tomt.");
       return;
     }
+    if (startBalance.trim() === "" || endBalance.trim() === "") {
+      alert("Ange både ingående och utgående saldo.");
+      return;
+    }
+
     updateAccount.mutate(
-      { accountName: editName, accountNumber: editNumber },
+      {
+        accountName: editName.trim(),
+        accountNumber: editNumber.trim() || null,
+        startBalance: Number(startBalance),
+        endBalance: Number(endBalance),
+      },
       {
         onSuccess: () => {
-          // Efter lyckad uppdatering kan vi t.ex. göra en refetch automatiskt via useAccount‐hook
-          // eller navigera bort om vi vill:
-          // navigate({ to: `/clients/${cid}/accounts/${aid}` });
+          // Efter lyckad uppdatering refetchar useAccount‐hook automatiskt
         },
       }
     );
@@ -71,8 +91,9 @@ export default function AccountDetailPage() {
         </button>
       </header>
 
-      {/* Formulär för att redigera konto */}
+      {/* Formulär för att redigera konto + år + saldon */}
       <form onSubmit={handleUpdate} className="space-y-5">
+        {/* Kontonamn */}
         <div>
           <label htmlFor="editName" className="block text-gray-700 mb-1">
             Kontonamn
@@ -86,6 +107,8 @@ export default function AccountDetailPage() {
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
+
+        {/* Kontonummer (valfritt) */}
         <div>
           <label htmlFor="editNumber" className="block text-gray-700 mb-1">
             Kontonummer{" "}
@@ -99,6 +122,39 @@ export default function AccountDetailPage() {
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
+
+        {/* Ingående saldo */}
+        <div>
+          <label htmlFor="startBalance" className="block text-gray-700 mb-1">
+            Ingående saldo (1 jan)
+          </label>
+          <input
+            id="startBalance"
+            type="number"
+            step="0.01"
+            value={startBalance}
+            onChange={(e) => setStartBalance(e.target.value)}
+            required
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+
+        {/* Utgående saldo */}
+        <div>
+          <label htmlFor="endBalance" className="block text-gray-700 mb-1">
+            Utgående saldo (31 dec)
+          </label>
+          <input
+            id="endBalance"
+            type="number"
+            step="0.01"
+            value={endBalance}
+            onChange={(e) => setEndBalance(e.target.value)}
+            required
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+
         <button
           type="submit"
           disabled={updateAccount.isPending}
