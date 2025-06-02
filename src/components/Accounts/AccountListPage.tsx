@@ -21,16 +21,6 @@ export default function AccountsListPage() {
 
   return (
     <div className="space-y-6">
-      {/* Knapp för att skapa nytt konto */}
-      <div className="flex justify-end">
-        <button
-          onClick={() => navigate({ to: `/clients/${cid}/accounts/new` })}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          + Skapa konto
-        </button>
-      </div>
-
       {/* Lista över alla konton */}
       {accounts.length > 0 ? (
         <ul className="space-y-4">
