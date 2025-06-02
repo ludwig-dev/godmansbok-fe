@@ -84,9 +84,7 @@ export default function TransactionDetailPage() {
           Transaktion: <span className="text-blue-600">{transaction.id}</span>
         </h2>
         <button
-          onClick={() =>
-            navigate({ to: `/clients/${cid}/accounts/${aid}/transactions` })
-          }
+          onClick={() => navigate({ to: `/clients/${cid}/accounts/` })}
           className="px-2 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
         >
           ← Tillbaka

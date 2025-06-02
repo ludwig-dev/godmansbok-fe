@@ -3,6 +3,7 @@ import { Route } from "../../routes/clients/$clientId/accounts/route";
 import { useAccounts } from "../../hooks/useAccounts";
 import type { AccountDTO } from "../../hooks/useAccounts";
 import { Link } from "@tanstack/react-router";
+import TransactionList from "../Transaction/TransactionList";
 
 export default function AccountsListPage() {
   const { clientId } = Route.useParams();
@@ -38,6 +39,12 @@ export default function AccountsListPage() {
                     Kontonummer: {account.accountNumber}
                   </p>
                 )}
+                <p className="text-sm text-gray-500">
+                  Startsaldo: {account.startBalance ?? "Ej angivet"} kr
+                </p>
+                <p className="text-sm text-gray-500">
+                  Slutbalans: {account.endBalance ?? "Ej angivet"} kr
+                </p>
               </div>
               <Link
                 to={`/clients/${cid}/accounts/${account.id}`}
@@ -45,18 +52,17 @@ export default function AccountsListPage() {
               >
                 Ändra
               </Link>
-              <Link
-                to={`/clients/${cid}/accounts/${account.id}/transactions`}
-                className="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-              >
-                Transaktioner
-              </Link>
             </li>
           ))}
         </ul>
       ) : (
         <p className="text-gray-600">Inga konton skapade ännu.</p>
       )}
+
+      <div className="mt-8">
+        {/* Lista över transaktioner */}
+        <TransactionList clientId={cid} accountId={accounts[0].id} />
+      </div>
     </div>
   );
 }

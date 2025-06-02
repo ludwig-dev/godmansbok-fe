@@ -28,11 +28,8 @@ export default function AccountDetailPage() {
   // När kontot laddas: förifyll formuläret
   useEffect(() => {
     if (account) {
-      console.log("Fetched account:", account);
       setEditName(account.accountName);
       setEditNumber(account.accountNumber || "");
-      console.log("Start Balance:", account.startBalance);
-      console.log("End Balance:", account.endBalance);
       setStartBalance(
         account.startBalance !== null ? account.startBalance.toString() : ""
       );
