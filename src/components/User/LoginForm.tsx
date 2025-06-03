@@ -20,8 +20,8 @@ export function LoginForm() {
         );
     };
 
-    const errorMessage = loginMutation.error?.message;
-
+    const errorMessage = loginMutation.error?.response.data;
+    console.log("Login error:", errorMessage);
     return (
         <div className="max-w-md mx-auto mt-12 p-6 bg-white rounded-lg shadow">
             <h2 className="text-2xl font-semibold mb-6 text-center">Log in</h2>
