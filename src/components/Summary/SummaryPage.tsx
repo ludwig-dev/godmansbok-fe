@@ -48,7 +48,7 @@ export default function SummaryPage() {
     const startBalance = data.startBalance ?? 0;  // A
     const sumIncome = data.sumIncome ?? 0;        // B
     const totalAB = data.totalAB ?? 0;
-    const sumExpense = data.sumExpense ?? 0;      // C
+    const sumExpense = data.sumExpenses ?? 0;      // C
     const endBalance = data.endBalance ?? 0;      // D
     const totalCD = data.totalCD ?? 0;
     const match = data.match;                     // boolean

@@ -5,7 +5,7 @@ export interface FullSummary {
     startBalance: number;  // A
     sumIncome: number;     // B
     totalAB: number;
-    sumExpense: number;    // C
+    sumExpenses: number;    // C
     endBalance: number;    // D
     totalCD: number;
     match: boolean;
