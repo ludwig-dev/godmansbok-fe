@@ -1,9 +1,14 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
+import ClientNavbar from "../../../components/UI/ClientNavbar";
 
 export const Route = createFileRoute("/clients/$clientId")({
   component: () => (
-    <div>
-      <Outlet /> {/* index.tsx eller new.tsx eller $clientId/route.tsx */}
-    </div>
+    <>
+
+      <ClientNavbar />
+      <div className="">
+        <Outlet /> {/* renderar index.tsx, accounts, other-assets, etc. */}
+      </div>
+    </>
   ),
 });
