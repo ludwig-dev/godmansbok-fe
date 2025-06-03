@@ -40,10 +40,10 @@ export default function AccountsListPage() {
                   </p>
                 )}
                 <p className="text-sm text-gray-500">
-                  Startsaldo: {account.startBalance ?? "Ej angivet"} kr
+                  Saldo 1 januari: {account.startBalance ?? "Ej angivet"} kr
                 </p>
                 <p className="text-sm text-gray-500">
-                  Slutbalans: {account.endBalance ?? "Ej angivet"} kr
+                  Saldo 31 december: {account.endBalance ?? "Ej angivet"} kr
                 </p>
               </div>
               <Link

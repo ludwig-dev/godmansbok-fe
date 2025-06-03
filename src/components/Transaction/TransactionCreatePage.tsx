@@ -38,7 +38,7 @@ export default function TransactionCreatePage() {
       },
       {
         onSuccess: () => {
-          navigate({ to: `/clients/${cid}/accounts/${aid}/transactions` });
+          navigate({ to: `/clients/${cid}/accounts/` });
         },
       }
     );
