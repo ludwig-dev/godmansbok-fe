@@ -1,10 +1,14 @@
-import { useNavigate, Link, Outlet } from "@tanstack/react-router";
-import { useClients } from "../../hooks/useClients";
-import type { ClientDTO } from "../../hooks/useClients";
+// src/components/Clients/ClientsListPage.tsx
+import { useState } from "react";
+import { PlusCircle } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { useClients, type ClientDTO } from "../../hooks/useClients";
+import Modal from "../UI/Modal";
+import CreateClientModal from "./CreateClientModal";
 
 export default function ClientsListPage() {
-  const navigate = useNavigate();
-  const { data: clients, isLoading, isError, error } = useClients();
+  const { data: clients, isLoading, isError, error, refetch } = useClients();
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   if (isLoading) {
     return (
@@ -24,15 +28,21 @@ export default function ClientsListPage() {
     );
   }
 
+  const handleCreated = (newClient: ClientDTO) => {
+    // Efter ny klient har skapats, refetcha listan
+    refetch();
+  };
+
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="space-y-6 max-w-3xl mx-auto pt-8">
       <header className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-semibold text-gray-800">Godmanslista</h1>
         <button
-          onClick={() => navigate({ to: "/clients/new" })}
-          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          onClick={() => setShowCreateModal(true)}
+          className="inline-flex items-center px-4 py-2 bg-green-700 text-white rounded hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-600"
         >
-          + Ny Huvudman
+          <PlusCircle className="w-5 h-5 mr-2" />
+          Ny Huvudman
         </button>
       </header>
 
@@ -53,7 +63,7 @@ export default function ClientsListPage() {
               </div>
               <Link
                 to={`/clients/${client.id}`}
-                className="inline-flex items-center px-3 py-2 bg-green-500 text-white text-sm font-medium rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="inline-flex items-center px-3 py-2 bg-gray-800 text-white rounded hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600"
               >
                 Öppna
               </Link>
@@ -64,8 +74,15 @@ export default function ClientsListPage() {
         <p className="text-gray-600">Du har inga klienter ännu.</p>
       )}
 
-      {/* Om du har nested routes (t.ex. /clients/new) kan de visas här */}
-      <Outlet />
+      {/* Modal för att skapa ny klient */}
+      {showCreateModal && (
+        <Modal isOpen onClose={() => setShowCreateModal(false)}>
+          <CreateClientModal
+            onClose={() => setShowCreateModal(false)}
+            onCreated={handleCreated}
+          />
+        </Modal>
+      )}
     </div>
   );
 }
