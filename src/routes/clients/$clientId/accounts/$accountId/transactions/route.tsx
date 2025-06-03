@@ -4,7 +4,7 @@ export const Route = createFileRoute(
   "/clients/$clientId/accounts/$accountId/transactions"
 )({
   component: () => (
-    <div className="space-y-6">
+    <div>
       {/* Här renderas "/transactions", "/transactions/new" eller "/transactions/:transactionId" */}
       <Outlet />
     </div>
