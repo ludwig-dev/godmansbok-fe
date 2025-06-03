@@ -39,14 +39,6 @@ export default function AccountEditModal({
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) {
-      alert("Kontonamn får inte vara tomt.");
-      return;
-    }
-    if (startBalance.trim() === "" || endBalance.trim() === "") {
-      alert("Ange både ingående och utgående saldo.");
-      return;
-    }
     updateAccount.mutate(
       {
         accountName: name.trim(),
@@ -111,7 +103,6 @@ export default function AccountEditModal({
             step="0.01"
             value={startBalance}
             onChange={(e) => setStartBalance(e.target.value)}
-            required
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
           />
         </div>
@@ -125,7 +116,6 @@ export default function AccountEditModal({
             step="0.01"
             value={endBalance}
             onChange={(e) => setEndBalance(e.target.value)}
-            required
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
           />
         </div>
