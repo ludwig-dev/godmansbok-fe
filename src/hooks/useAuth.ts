@@ -12,10 +12,8 @@ export function useLogin() {
             }),
         onSuccess: () => {
             qc.invalidateQueries({ queryKey: ["userProfile"] });
-            alert("loggade in")
         },
         onError: (err) => {
-            alert(err.response.data)
         },
     });
 }
@@ -41,11 +39,9 @@ export function useRegister() {
             ),
         onSuccess: () => {
             qc.invalidateQueries({ queryKey: ["userProfile"] });
-            alert("registrerad")
         }
         ,
         onError: (err) => {
-            alert(err.response.data)
         },
     });
 }
