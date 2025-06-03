@@ -1,5 +1,5 @@
 import type { TransactionDTO } from "../../hooks/useTransactions";
-import { Eye } from "lucide-react";
+import { Pencil } from "lucide-react";
 
 interface ExpenseListProps {
   transactions: TransactionDTO[];
@@ -42,7 +42,7 @@ export default function ExpenseList({ transactions, onView }: ExpenseListProps) 
               className="p-2 hover:bg-gray-100 rounded"
               aria-label="Visa utgiftdetaljer"
             >
-              <Eye className="w-5 h-5 text-gray-700" />
+              <Pencil className="w-5 h-5 text-gray-700" />
             </button>
           </li>
         ))}
