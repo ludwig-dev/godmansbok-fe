@@ -13,7 +13,7 @@ export default function ClientsListPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-full p-4">
-        <p className="text-gray-500">Hämtar klienter…</p>
+        <p className="text-gray-500">Hämtar Huvudmän</p>
       </div>
     );
   }
@@ -71,7 +71,7 @@ export default function ClientsListPage() {
           ))}
         </ul>
       ) : (
-        <p className="text-gray-600">Du har inga klienter ännu.</p>
+        <p className="text-gray-600">Du har inga Huvudmän ännu.</p>
       )}
 
       {/* Modal för att skapa ny klient */}

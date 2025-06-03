@@ -41,7 +41,7 @@ export function Navbar() {
                 to="/clients"
                 className="text-gray-300 hover:text-white px-3 py-1 rounded-md text-sm font-medium"
               >
-                Klienter
+                Huvudmän
               </Link>
             </>
           ) : (
