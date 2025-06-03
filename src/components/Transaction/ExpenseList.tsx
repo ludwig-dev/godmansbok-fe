@@ -1,20 +1,12 @@
-import { useNavigate } from "@tanstack/react-router";
 import type { TransactionDTO } from "../../hooks/useTransactions";
+import { Eye } from "lucide-react";
 
 interface ExpenseListProps {
-  clientId: number;
-  accountId: number;
   transactions: TransactionDTO[];
+  onView: (txId: number) => void;
 }
 
-export default function ExpenseList({
-  clientId,
-  accountId,
-  transactions,
-}: ExpenseListProps) {
-  const navigate = useNavigate();
-
-  // Filtrera ut endast “UTGIFT” och sortera på datum (nyast först)
+export default function ExpenseList({ transactions, onView }: ExpenseListProps) {
   const expenses = transactions
     .filter((tx) => tx.type === "UTGIFT")
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -35,7 +27,7 @@ export default function ExpenseList({
         {expenses.map((tx) => (
           <li
             key={tx.id}
-            className="bg-white shadow rounded p-4 flex justify-between items-center"
+            className="bg-white shadow-sm rounded p-4 flex justify-between items-center"
           >
             <div>
               <p className="font-medium text-gray-900">
@@ -46,14 +38,11 @@ export default function ExpenseList({
               )}
             </div>
             <button
-              onClick={() =>
-                navigate({
-                  to: `/clients/${clientId}/accounts/${accountId}/transactions/${tx.id}`,
-                })
-              }
-              className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              onClick={() => onView(tx.id)}
+              className="p-2 hover:bg-gray-100 rounded"
+              aria-label="Visa utgiftdetaljer"
             >
-              Visa
+              <Eye className="w-5 h-5 text-gray-700" />
             </button>
           </li>
         ))}
