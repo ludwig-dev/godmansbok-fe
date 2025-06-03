@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useLogin } from "../../hooks/useAuth";
-// import { useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 
 export function LoginForm() {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const loginMutation = useLogin();
@@ -14,7 +14,7 @@ export function LoginForm() {
             { email, password },
             {
                 onSuccess: () => {
-                    //   navigate({ to: "/profile" });
+                   navigate({ to: "/clients" });
                 },
             }
         );
