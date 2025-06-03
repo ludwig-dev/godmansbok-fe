@@ -40,7 +40,7 @@ export default function ClientDetailPage() {
             className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-800 text-white rounded hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600"
           >
             <Landmark className="w-5 h-5" />
-            Se konton
+            Bankkonto
           </button>
 
           <button
@@ -50,7 +50,7 @@ export default function ClientDetailPage() {
             className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-800 text-white rounded hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600"
           >
             <Archive className="w-5 h-5" />
-            Lägg till tillgångar
+            Övriga tillgångar
           </button>
 
           <button
@@ -60,7 +60,7 @@ export default function ClientDetailPage() {
             className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-800 text-white rounded hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600"
           >
             <XCircle className="w-5 h-5" />
-            Lägg till skulder
+            Skulder
           </button>
 
           <button
@@ -76,7 +76,7 @@ export default function ClientDetailPage() {
             className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-800 text-white rounded hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600"
           >
             <FileText className="w-5 h-5" />
-            Visa sammanställning
+            Sammanställning
           </button>
         </div>
       </div>
