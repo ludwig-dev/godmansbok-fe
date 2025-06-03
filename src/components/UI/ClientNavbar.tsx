@@ -13,6 +13,7 @@ export default function ClientNavbar() {
     { label: "Konto", to: `/clients/${cid}/accounts` },
     { label: "Tillgångar", to: `/clients/${cid}/other-assets` },
     { label: "Skulder", to: `/clients/${cid}/liabilities` },
+    { label: "Smmanställning", to: `/clients/${cid}/summary` },
   ];
 
   // 3) Läs av nuvarande sökväg för att markera aktiv flik
@@ -28,11 +29,10 @@ export default function ClientNavbar() {
               <li key={tab.to}>
                 <Link
                   to={tab.to}
-                  className={`px-3 py-1 rounded-md text-sm font-medium transition ${
-                    isActive
+                  className={`px-3 py-1 rounded-md text-sm font-medium transition ${isActive
                       ? "bg-blue-600 text-white"
                       : "text-gray-700 hover:bg-blue-200"
-                  }`}
+                    }`}
                 >
                   {tab.label}
                 </Link>
