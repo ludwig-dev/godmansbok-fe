@@ -57,12 +57,16 @@ export default function TransactionList({
 
       {/* Lista över inkomster */}
       <IncomeList
+        clientId={clientId}
+        accountId={accountId}
         transactions={transactions}
         onView={(txId) => setViewingTxId(txId)}
       />
 
       {/* Lista över utgifter */}
       <ExpenseList
+        clientId={clientId}
+        accountId={accountId}
         transactions={transactions}
         onView={(txId) => setViewingTxId(txId)}
       />
