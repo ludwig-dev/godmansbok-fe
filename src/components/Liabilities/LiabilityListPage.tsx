@@ -5,6 +5,7 @@ import { useLiabilities, type LiabilityDTO } from "../../hooks/useLiabilities";
 import Modal from "../UI/Modal";
 import LiabilityCreateModal from "./LiabilityCreateModal";
 import LiabilityDetailModal from "./LiabilityDetailModal";
+import DeleteLiabilityButton from "./DeleteLiabilityButton"; // importera delete-knappen
 import { Route } from "../../routes/clients/$clientId/liabilities/route";
 
 export default function LiabilityListPage() {
@@ -58,7 +59,7 @@ export default function LiabilityListPage() {
           {liabilities.map((liab: LiabilityDTO) => (
             <li
               key={liab.id}
-              className="bg-white shadow-sm rounded p-4 flex justify-between items-center"
+              className="bg-white shadow-sm rounded-lg p-4 flex justify-between items-center"
             >
               <div>
                 <p className="text-lg font-medium text-gray-900">
@@ -74,13 +75,19 @@ export default function LiabilityListPage() {
                   </p>
                 )}
               </div>
-              <button
-                onClick={() => setViewingLiabilityId(liab.id)}
-                className="p-2 hover:bg-gray-100 rounded"
-                aria-label="Visa skuld"
-              >
-                <Pencil className="w-5 h-5 text-gray-700" />
-              </button>
+              <div className="flex gap-2">
+                <DeleteLiabilityButton
+                  clientId={cid}
+                  liabilityId={liab.id}
+                />
+                <button
+                  onClick={() => setViewingLiabilityId(liab.id)}
+                  className="p-2 hover:bg-gray-100 rounded"
+                  aria-label="Visa skuld"
+                >
+                  <Pencil className="w-5 h-5 text-gray-700" />
+                </button>
+              </div>
             </li>
           ))}
         </ul>
