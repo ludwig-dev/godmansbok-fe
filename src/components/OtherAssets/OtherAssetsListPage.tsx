@@ -5,6 +5,7 @@ import { useOtherAssets, type OtherAssetDTO } from "../../hooks/useOtherAssets";
 import Modal from "../UI/Modal";
 import OtherAssetCreateModal from "./OtherAssetCreateModal";
 import OtherAssetDetailModal from "./OtherAssetDetailModal";
+import DeleteOtherAssetButton from "./DeleteOtherAssetButton"; // importera delete-knappen
 import { Route } from "../../routes/clients/$clientId/other-assets/route";
 
 export default function OtherAssetsListPage() {
@@ -61,7 +62,7 @@ export default function OtherAssetsListPage() {
           {assets.map((asset: OtherAssetDTO) => (
             <li
               key={asset.id}
-              className="bg-white shadow-sm rounded p-4 flex justify-between items-center"
+              className="bg-white shadow-sm rounded-lg p-4 flex justify-between items-center"
             >
               <div>
                 <p className="text-lg font-medium text-gray-900">
@@ -75,13 +76,19 @@ export default function OtherAssetsListPage() {
                   31 dec: {asset.valueEndOfYear.toFixed(2)} kr
                 </p>
               </div>
-              <button
-                onClick={() => setViewingAssetId(asset.id)}
-                className="p-2 hover:bg-gray-100 rounded"
-                aria-label="Visa tillgång"
-              >
-                <Pencil className="w-5 h-5 text-gray-700" />
-              </button>
+              <div className="flex gap-2">
+                <DeleteOtherAssetButton
+                  clientId={cid}
+                  assetId={asset.id}
+                />
+                <button
+                  onClick={() => setViewingAssetId(asset.id)}
+                  className="p-2 hover:bg-gray-100 rounded"
+                  aria-label="Visa tillgång"
+                >
+                  <Pencil className="w-5 h-5 text-gray-700" />
+                </button>
+              </div>
             </li>
           ))}
         </ul>
