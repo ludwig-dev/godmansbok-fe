@@ -65,7 +65,7 @@ export default function TransactionDetailPage() {
         amount: Number(amount),
         type,
         description: description.trim(),
-        attachmentNumber: attachmentNumber.trim() || null,
+        attachmentNumber: attachmentNumber.trim() || "",
       },
       {
         onSuccess: () => {
@@ -168,14 +168,14 @@ export default function TransactionDetailPage() {
 
         <button
           type="submit"
-          disabled={updateTx.isLoading}
+          disabled={updateTx.isPending}
           className={`w-full flex justify-center items-center px-4 py-2 text-white font-medium rounded ${
-            updateTx.isLoading
+            updateTx.isPending
               ? "bg-green-300 cursor-not-allowed"
               : "bg-green-600 hover:bg-green-700"
           } focus:outline-none focus:ring-2 focus:ring-green-500`}
         >
-          {updateTx.isLoading ? "Sparar…" : "Spara ändringar"}
+          {updateTx.isPending ? "Sparar…" : "Spara ändringar"}
         </button>
 
         {updateTx.isError && (

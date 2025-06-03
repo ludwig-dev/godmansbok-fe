@@ -34,7 +34,7 @@ export default function TransactionCreatePage() {
         amount: Number(amount),
         type,
         description: description.trim(),
-        attachmentNumber: attachmentNumber.trim() || null,
+        attachmentNumber: attachmentNumber.trim() || "",
       },
       {
         onSuccess: () => {
