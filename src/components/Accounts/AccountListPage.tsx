@@ -1,17 +1,24 @@
+// src/components/Accounts/AccountsListPage.tsx
+import { useState } from "react";
+import { Pencil } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 import { Route } from "../../routes/clients/$clientId/accounts/route";
-import { useAccounts } from "../../hooks/useAccounts";
-import type { AccountDTO } from "../../hooks/useAccounts";
-import { Link } from "@tanstack/react-router";
+import { useAccounts, type AccountDTO } from "../../hooks/useAccounts";
 import TransactionList from "../Transaction/TransactionList";
+import Modal from "../UI/Modal";
+import AccountEditModal from "./AccountEditModal";
 
 export default function AccountsListPage() {
   const { clientId } = Route.useParams();
   const cid = Number(clientId);
   const navigate = useNavigate();
 
-  // Hämta alla konton för klienten
-  const { data: accounts = [], isLoading, isError, error } = useAccounts(cid);
+  const { data: accounts = [], isLoading, isError, error, refetch } =
+    useAccounts(cid);
+
+  // rätt – starta alltid med null, öppna bara när knappen klickas
+  const [editingAccountId, setEditingAccountId] = useState<number | null>(null);
+
 
   if (isLoading) {
     return <p className="text-gray-500 py-6">Laddar konton…</p>;
@@ -20,49 +27,58 @@ export default function AccountsListPage() {
     return <p className="text-red-500 py-6">Fel: {(error as any).message}</p>;
   }
 
+  // Eftersom det bara finns ett konto, plocka första
+  const account = accounts[0] as AccountDTO | undefined;
+  if (!account) {
+    return <p className="text-gray-600">Inget konto hittades.</p>;
+  }
+
+  const handleSaved = () => {
+    refetch();
+  };
+
   return (
     <div className="space-y-6">
-      {/* Lista över alla konton */}
-      {accounts.length > 0 ? (
-        <ul className="space-y-4">
-          {accounts.map((account: AccountDTO) => (
-            <li
-              key={account.id}
-              className="bg-white shadow rounded p-4 flex justify-between items-center"
-            >
-              <div>
-                <p className="text-lg font-medium text-gray-900">
-                  {account.accountName}
-                </p>
-                {account.accountNumber && (
-                  <p className="text-sm text-gray-500">
-                    Kontonummer: {account.accountNumber}
-                  </p>
-                )}
-                <p className="text-sm text-gray-500">
-                  Saldo 1 januari: {account.startBalance ?? "Ej angivet"} kr
-                </p>
-                <p className="text-sm text-gray-500">
-                  Saldo 31 december: {account.endBalance ?? "Ej angivet"} kr
-                </p>
-              </div>
-              <Link
-                to={`/clients/${cid}/accounts/${account.id}`}
-                className="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-              >
-                Ändra
-              </Link>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="text-gray-600">Inga konton skapade ännu.</p>
-      )}
-
-      <div className="mt-8">
-        {/* Lista över transaktioner */}
-        <TransactionList clientId={cid} accountId={accounts[0].id} />
+      <div className="bg-white shadow-sm rounded p-4 flex justify-between items-center">
+        <div>
+          <p className="text-lg font-medium text-gray-900">
+            {account.accountName}
+          </p>
+          {account.accountNumber && (
+            <p className="text-sm text-gray-500">
+              Kontonummer: {account.accountNumber}
+            </p>
+          )}
+          <p className="text-sm text-gray-500">
+            Saldo 1 januari: {account.startBalance ?? "Ej angivet"} kr
+          </p>
+          <p className="text-sm text-gray-500">
+            Saldo 31 december: {account.endBalance ?? "Ej angivet"} kr
+          </p>
+        </div>
+        <button
+          onClick={() => setEditingAccountId(account.id)}
+          className="p-2 hover:bg-gray-100 rounded"
+          aria-label="Ändra konto"
+        >
+          <Pencil className="w-5 h-5 text-gray-700" />
+        </button>
       </div>
+
+      <div>
+        <TransactionList clientId={cid} accountId={account.id} />
+      </div>
+
+      {editingAccountId !== null && (
+        <Modal isOpen onClose={() => setEditingAccountId(null)}>
+          <AccountEditModal
+            clientId={cid}
+            accountId={editingAccountId}
+            onClose={() => setEditingAccountId(null)}
+            onSaved={handleSaved}
+          />
+        </Modal>
+      )}
     </div>
   );
 }
