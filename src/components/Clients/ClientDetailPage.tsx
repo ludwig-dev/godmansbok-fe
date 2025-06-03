@@ -18,7 +18,6 @@ export default function ClientDetailPage() {
     );
   }
 
-  console.log("ClientDetailPage", { client });
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <div className="bg-white shadow-md rounded-lg p-6 space-y-6">
