@@ -86,7 +86,7 @@ export default function OtherAssetsListPage() {
           ))}
         </ul>
       ) : (
-        <p className="text-gray-600">Inga andra tillgångar ännu.</p>
+        <p className="text-gray-600">Inga övriga tillgångar ännu.</p>
       )}
 
       {/* Modal för att skapa ny tillgång */}
