@@ -38,7 +38,7 @@ export default function AccountsListPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-3xl mx-auto pt-8">
       <div className="bg-white shadow-sm rounded p-4 flex justify-between items-center">
         <div>
           <p className="text-lg font-medium text-gray-900">
@@ -79,6 +79,6 @@ export default function AccountsListPage() {
           />
         </Modal>
       )}
-    </div>
+      </div>
   );
 }
