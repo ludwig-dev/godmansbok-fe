@@ -1,21 +1,29 @@
-import { useNavigate } from "@tanstack/react-router";
+// src/components/Liabilities/LiabilityListPage.tsx
+import { useState } from "react";
+import { PlusCircle, Pencil } from "lucide-react";
+import { useLiabilities, type LiabilityDTO } from "../../hooks/useLiabilities";
+import Modal from "../UI/Modal";
+import LiabilityCreateModal from "./LiabilityCreateModal";
+import LiabilityDetailModal from "./LiabilityDetailModal";
 import { Route } from "../../routes/clients/$clientId/liabilities/route";
-import { useLiabilities } from "../../hooks/useLiabilities";
-import type { LiabilityDTO } from "../../hooks/useLiabilities";
 
 export default function LiabilityListPage() {
-  // Hämta clientId från Route.useParams()
+  // 1) Hämta clientId
   const { clientId } = Route.useParams<{ clientId: string }>();
   const cid = Number(clientId);
-  const navigate = useNavigate();
 
-  // Hämtar alla skulder för den klienten
+  // 2) Hämta alla skulder
   const {
     data: liabilities = [],
     isLoading,
     isError,
     error,
+    refetch,
   } = useLiabilities(cid);
+
+  // 3) State för modaler
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [viewingLiabilityId, setViewingLiabilityId] = useState<number | null>(null);
 
   if (isLoading) {
     return <p className="text-gray-500 py-6">Laddar skulder…</p>;
@@ -24,54 +32,83 @@ export default function LiabilityListPage() {
     return <p className="text-red-500 py-6">Fel: {(error as any).message}</p>;
   }
 
+  const handleCreated = () => {
+    refetch();
+  };
+  const handleSaved = () => {
+    refetch();
+  };
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-3xl mx-auto pt-8">
       {/* Knapp för att skapa ny skuld */}
-      <div className="flex justify-end">
+      <div className="flex justify-start">
         <button
-          onClick={() => navigate({ to: `/clients/${cid}/liabilities/new` })}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          onClick={() => setShowCreateModal(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600"
         >
-          + Lägg till skuld
+          <PlusCircle className="w-5 h-5" />
+          Ny skuld
         </button>
       </div>
 
+      {/* Lista över skulder */}
       {liabilities.length > 0 ? (
         <ul className="space-y-4">
           {liabilities.map((liab: LiabilityDTO) => (
             <li
               key={liab.id}
-              className="bg-white shadow rounded p-4 flex justify-between items-center"
+              className="bg-white shadow-sm rounded p-4 flex justify-between items-center"
             >
               <div>
                 <p className="text-lg font-medium text-gray-900">
                   {liab.creditor}
                 </p>
-                <p className="text-sm text-gray-500">
-                  Startårsskuld: {liab.debtStartOfYear} kr – Slutårsskuld:{" "}
-                  {liab.debtEndOfYear} kr
+                <p className="text-sm text-gray-500 mt-1">
+                  Skuld 1 jan: {liab.debtStartOfYear.toFixed(2)} kr — Skuld 31 dec:{" "}
+                  {liab.debtEndOfYear.toFixed(2)} kr
                 </p>
                 {liab.changeAmount !== null && (
                   <p className="text-sm text-gray-500">
-                    Förändring: {liab.changeAmount} kr
+                    Förändring: {liab.changeAmount.toFixed(2)} kr
                   </p>
                 )}
               </div>
               <button
-                onClick={() =>
-                  navigate({
-                    to: `/clients/${cid}/liabilities/${liab.id}`,
-                  })
-                }
-                className="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                onClick={() => setViewingLiabilityId(liab.id)}
+                className="p-2 hover:bg-gray-100 rounded"
+                aria-label="Visa skuld"
               >
-                Visa
+                <Pencil className="w-5 h-5 text-gray-700" />
               </button>
             </li>
           ))}
         </ul>
       ) : (
         <p className="text-gray-600">Inga skulder registrerade ännu.</p>
+      )}
+
+      {/* Modal för att skapa ny skuld */}
+      {showCreateModal && (
+        <Modal isOpen onClose={() => setShowCreateModal(false)}>
+          <LiabilityCreateModal
+            clientId={cid}
+            onClose={() => setShowCreateModal(false)}
+            onCreated={handleCreated}
+          />
+        </Modal>
+      )}
+
+      {/* Modal för att visa/edita befintlig skuld */}
+      {viewingLiabilityId !== null && (
+        <Modal isOpen onClose={() => setViewingLiabilityId(null)}>
+          <LiabilityDetailModal
+            clientId={cid}
+            liabilityId={viewingLiabilityId}
+            onClose={() => setViewingLiabilityId(null)}
+            onSaved={handleSaved}
+          />
+        </Modal>
       )}
     </div>
   );
