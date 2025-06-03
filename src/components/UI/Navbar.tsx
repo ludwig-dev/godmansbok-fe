@@ -2,18 +2,19 @@
 import { Link } from "@tanstack/react-router";
 import { useGodmanProfile } from "../../hooks/useGodman";
 import { useLogout } from "../../hooks/useAuth";
+import { useNavigate } from "@tanstack/react-router";
 
 export function Navbar() {
   const { data: user, isLoading } = useGodmanProfile();
   const logoutMutation = useLogout();
-
+  const navigate = useNavigate();
   // Om profilen fortfarande laddar, visa inget (eller en spinner om du vill)
   if (isLoading) return null;
 
   const handleLogout = () => {
     logoutMutation.mutate(undefined, {
       onSuccess: () => {
-        // efter logout, useUserProfile kommer att refetchas eller finnas som null
+        navigate({ to: `/` });
       },
     });
   };
