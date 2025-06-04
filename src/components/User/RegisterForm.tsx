@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRegister } from "../../hooks/useAuth";
 import { useNavigate } from "@tanstack/react-router";
+import toast from "react-hot-toast";
 
 export function RegisterForm() {
   const [username, setUsername] = useState("");
@@ -17,9 +18,11 @@ export function RegisterForm() {
       { username: username, email, password },
       {
         onSuccess: () => {
+          toast.success("Registration lyckades! Du kan nu Logga in.");
           navigate({ to: "/login" });
         },
         onError: (error) => {
+          toast.error(error?.response.data || "Registration misslyckades");
           setErrorMessage(error?.response.data || "Registration failed");
         },
       }
