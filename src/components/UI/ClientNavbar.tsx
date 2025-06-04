@@ -9,9 +9,9 @@ export default function ClientNavbar() {
 
   // 2) Definiera klient‐specifika rutter
   const tabs: { label: string; to: string }[] = [
-    { label: "Översikt", to: `/clients/${cid}` },
     { label: "Konto", to: `/clients/${cid}/accounts` },
     { label: "Tillgångar", to: `/clients/${cid}/other-assets` },
+    { label: "Översikt", to: `/clients/${cid}` },
     { label: "Skulder", to: `/clients/${cid}/liabilities` },
     { label: "Smmanställning", to: `/clients/${cid}/summary` },
   ];
