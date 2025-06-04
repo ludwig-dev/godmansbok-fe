@@ -17,6 +17,7 @@ import SectionF from "./SectionF";
 import AdditionalInfoSection from "./AdditionalInfoSection";
 import { Route } from "../../routes/clients/$clientId/route";
 import type { TransactionDTO } from "../../hooks/useTransactions";
+import PrintButton from "../UI/PrintButton";
 
 export default function SummaryContainer() {
   // 1) Läs av clientId från route‐parametrar
@@ -180,6 +181,10 @@ export default function SummaryContainer() {
   // 9) Rendera alla sektioner A, B och C
   return (
     <div className="bg-gray-50 min-h-screen">
+      <div className="flex justify-end max-w-3xl space-y-6 m-4 print:hidden">
+        <PrintButton />
+      </div>
+
       <HeaderSection />
       <SignatureSection />
       <ReviewSection />
