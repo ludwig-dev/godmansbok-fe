@@ -20,6 +20,7 @@ import { Route as ClientsIndexImport } from './routes/clients/index'
 import { Route as ClientsNewImport } from './routes/clients/new'
 import { Route as ClientsClientIdRouteImport } from './routes/clients/$clientId/route'
 import { Route as ClientsClientIdIndexImport } from './routes/clients/$clientId/index'
+import { Route as ClientsClientIdSummaryprintImport } from './routes/clients/$clientId/summaryprint'
 import { Route as ClientsClientIdSummaryImport } from './routes/clients/$clientId/summary'
 import { Route as ClientsClientIdOtherAssetsRouteImport } from './routes/clients/$clientId/other-assets/route'
 import { Route as ClientsClientIdLiabilitiesRouteImport } from './routes/clients/$clientId/liabilities/route'
@@ -97,6 +98,13 @@ const ClientsClientIdIndexRoute = ClientsClientIdIndexImport.update({
   path: '/',
   getParentRoute: () => ClientsClientIdRouteRoute,
 } as any)
+
+const ClientsClientIdSummaryprintRoute =
+  ClientsClientIdSummaryprintImport.update({
+    id: '/summaryprint',
+    path: '/summaryprint',
+    getParentRoute: () => ClientsClientIdRouteRoute,
+  } as any)
 
 const ClientsClientIdSummaryRoute = ClientsClientIdSummaryImport.update({
   id: '/summary',
@@ -335,6 +343,13 @@ declare module '@tanstack/react-router' {
       path: '/summary'
       fullPath: '/clients/$clientId/summary'
       preLoaderRoute: typeof ClientsClientIdSummaryImport
+      parentRoute: typeof ClientsClientIdRouteImport
+    }
+    '/clients/$clientId/summaryprint': {
+      id: '/clients/$clientId/summaryprint'
+      path: '/summaryprint'
+      fullPath: '/clients/$clientId/summaryprint'
+      preLoaderRoute: typeof ClientsClientIdSummaryprintImport
       parentRoute: typeof ClientsClientIdRouteImport
     }
     '/clients/$clientId/': {
@@ -614,6 +629,7 @@ interface ClientsClientIdRouteRouteChildren {
   ClientsClientIdLiabilitiesRouteRoute: typeof ClientsClientIdLiabilitiesRouteRouteWithChildren
   ClientsClientIdOtherAssetsRouteRoute: typeof ClientsClientIdOtherAssetsRouteRouteWithChildren
   ClientsClientIdSummaryRoute: typeof ClientsClientIdSummaryRoute
+  ClientsClientIdSummaryprintRoute: typeof ClientsClientIdSummaryprintRoute
   ClientsClientIdIndexRoute: typeof ClientsClientIdIndexRoute
 }
 
@@ -625,6 +641,7 @@ const ClientsClientIdRouteRouteChildren: ClientsClientIdRouteRouteChildren = {
   ClientsClientIdOtherAssetsRouteRoute:
     ClientsClientIdOtherAssetsRouteRouteWithChildren,
   ClientsClientIdSummaryRoute: ClientsClientIdSummaryRoute,
+  ClientsClientIdSummaryprintRoute: ClientsClientIdSummaryprintRoute,
   ClientsClientIdIndexRoute: ClientsClientIdIndexRoute,
 }
 
@@ -644,6 +661,7 @@ export interface FileRoutesByFullPath {
   '/clients/$clientId/liabilities': typeof ClientsClientIdLiabilitiesRouteRouteWithChildren
   '/clients/$clientId/other-assets': typeof ClientsClientIdOtherAssetsRouteRouteWithChildren
   '/clients/$clientId/summary': typeof ClientsClientIdSummaryRoute
+  '/clients/$clientId/summaryprint': typeof ClientsClientIdSummaryprintRoute
   '/clients/$clientId/': typeof ClientsClientIdIndexRoute
   '/clients/$clientId/accounts/$accountId': typeof ClientsClientIdAccountsAccountIdRouteRouteWithChildren
   '/clients/$clientId/liabilities/$liabilityId': typeof ClientsClientIdLiabilitiesLiabilityIdRouteRouteWithChildren
@@ -673,6 +691,7 @@ export interface FileRoutesByTo {
   '/clients/new': typeof ClientsNewRoute
   '/clients': typeof ClientsIndexRoute
   '/clients/$clientId/summary': typeof ClientsClientIdSummaryRoute
+  '/clients/$clientId/summaryprint': typeof ClientsClientIdSummaryprintRoute
   '/clients/$clientId': typeof ClientsClientIdIndexRoute
   '/clients/$clientId/accounts/new': typeof ClientsClientIdAccountsNewRoute
   '/clients/$clientId/liabilities/new': typeof ClientsClientIdLiabilitiesNewRoute
@@ -702,6 +721,7 @@ export interface FileRoutesById {
   '/clients/$clientId/liabilities': typeof ClientsClientIdLiabilitiesRouteRouteWithChildren
   '/clients/$clientId/other-assets': typeof ClientsClientIdOtherAssetsRouteRouteWithChildren
   '/clients/$clientId/summary': typeof ClientsClientIdSummaryRoute
+  '/clients/$clientId/summaryprint': typeof ClientsClientIdSummaryprintRoute
   '/clients/$clientId/': typeof ClientsClientIdIndexRoute
   '/clients/$clientId/accounts/$accountId': typeof ClientsClientIdAccountsAccountIdRouteRouteWithChildren
   '/clients/$clientId/liabilities/$liabilityId': typeof ClientsClientIdLiabilitiesLiabilityIdRouteRouteWithChildren
@@ -737,6 +757,7 @@ export interface FileRouteTypes {
     | '/clients/$clientId/liabilities'
     | '/clients/$clientId/other-assets'
     | '/clients/$clientId/summary'
+    | '/clients/$clientId/summaryprint'
     | '/clients/$clientId/'
     | '/clients/$clientId/accounts/$accountId'
     | '/clients/$clientId/liabilities/$liabilityId'
@@ -765,6 +786,7 @@ export interface FileRouteTypes {
     | '/clients/new'
     | '/clients'
     | '/clients/$clientId/summary'
+    | '/clients/$clientId/summaryprint'
     | '/clients/$clientId'
     | '/clients/$clientId/accounts/new'
     | '/clients/$clientId/liabilities/new'
@@ -792,6 +814,7 @@ export interface FileRouteTypes {
     | '/clients/$clientId/liabilities'
     | '/clients/$clientId/other-assets'
     | '/clients/$clientId/summary'
+    | '/clients/$clientId/summaryprint'
     | '/clients/$clientId/'
     | '/clients/$clientId/accounts/$accountId'
     | '/clients/$clientId/liabilities/$liabilityId'
@@ -877,6 +900,7 @@ export const routeTree = rootRoute
         "/clients/$clientId/liabilities",
         "/clients/$clientId/other-assets",
         "/clients/$clientId/summary",
+        "/clients/$clientId/summaryprint",
         "/clients/$clientId/"
       ]
     },
@@ -915,6 +939,10 @@ export const routeTree = rootRoute
     },
     "/clients/$clientId/summary": {
       "filePath": "clients/$clientId/summary.tsx",
+      "parent": "/clients/$clientId"
+    },
+    "/clients/$clientId/summaryprint": {
+      "filePath": "clients/$clientId/summaryprint.tsx",
       "parent": "/clients/$clientId"
     },
     "/clients/$clientId/": {
