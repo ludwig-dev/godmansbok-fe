@@ -6,6 +6,7 @@ import { Landmark, Archive, XCircle, FileText, Pencil } from "lucide-react";
 import { useClient, type ClientDTO } from "../../hooks/useClients";
 import { useUpdateClient } from "../../hooks/useClients";
 import Modal from "../../components/UI/Modal";
+import DeleteClientButton from "./DeleteClientButton";
 
 export default function ClientDetailPage() {
   const { clientId } = Route.useParams<{ clientId: string }>();
@@ -16,7 +17,6 @@ export default function ClientDetailPage() {
   const updateClient = useUpdateClient(id);
 
   const [showEditModal, setShowEditModal] = useState(false);
-
   const [name, setName] = useState("");
   const [personalNumber, setPersonalNumber] = useState("");
 
@@ -54,26 +54,30 @@ export default function ClientDetailPage() {
   return (
     <>
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <div className="bg-white shadow-md rounded-lg p-6 space-y-6 relative">
-          {/* Edit‐ikon längst upp till höger */}
-          <button
-            onClick={() => setShowEditModal(true)}
-            className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded"
-            aria-label="Ändra huvudman"
-          >
-            <Pencil className="w-5 h-5 text-gray-600" />
-          </button>
+        <div className="bg-white shadow-md rounded-lg p-6 space-y-6">
+          {/* Title + buttons aligned on one line */}
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-semibold text-gray-800">
+              Huvudman: {client.name}
+            </h2>
+            <div className="flex gap-2">
+              <DeleteClientButton clientId={id} />
+              <button
+                onClick={() => setShowEditModal(true)}
+                className="p-2 hover:bg-gray-100 rounded"
+                aria-label="Ändra huvudman"
+              >
+                <Pencil className="w-5 h-5 text-gray-700" />
+              </button>
+            </div>
+          </div>
 
-          <h2 className="text-2xl font-semibold text-gray-800">
-            Huvudman: {client.name}
-          </h2>
           <p className="text-gray-500 text-sm">
-            Personnr:{" "}
-            {client.personalNumber ? client.personalNumber : "saknas"}
+            Personnr: {client.personalNumber ? client.personalNumber : "saknas"}
           </p>
           <p className="text-gray-700">
-            Detta är översiktssidan för huvudmannen. Välj en av
-            nedanstående åtgärder:
+            Detta är översiktssidan för huvudmannen. Välj en av nedanstående
+            åtgärder:
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -171,10 +175,11 @@ export default function ClientDetailPage() {
                 <button
                   type="submit"
                   disabled={updateClient.isPending}
-                  className={`flex items-center justify-center gap-2 px-4 py-2 text-white font-medium rounded ${updateClient.isPending
-                      ? "bg-gray-800  cursor-not-allowed"
-                      : "bg-gray-800  hover:bg-gray-900"
-                    } focus:outline-none focus:ring-2 focus:ring-gray-600`}
+                  className={`flex items-center justify-center gap-2 px-4 py-2 text-white font-medium rounded ${
+                    updateClient.isPending
+                      ? "bg-gray-800 cursor-not-allowed"
+                      : "bg-gray-800 hover:bg-gray-900"
+                  } focus:outline-none focus:ring-2 focus:ring-gray-600`}
                 >
                   {updateClient.isPending ? "Sparar…" : "Spara ändringar"}
                 </button>
