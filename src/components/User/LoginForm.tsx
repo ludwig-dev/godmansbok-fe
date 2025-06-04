@@ -21,7 +21,7 @@ export function LoginForm() {
         },
         onError: (error) => {
           // Handle error, e.g., show a toast notification
-          toast.error(error?.response.data || "Login failed");
+          toast.error(error?.response.data || "Login misslyckades");
         },
       }
     );
