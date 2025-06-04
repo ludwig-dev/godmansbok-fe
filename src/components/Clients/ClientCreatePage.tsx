@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useCreateClient } from "../../hooks/useClients";
+import toast from "react-hot-toast";
 
 export default function ClientCreatePage() {
   const navigate = useNavigate();
@@ -11,11 +12,14 @@ export default function ClientCreatePage() {
   const [personalNumber, setPersonalNumber] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim() || !personalNumber.trim()) {
-      alert("Både namn och personnummer måste fyllas i.");
+    // e.preventDefault();
+    if (!name.trim()) {
+      toast.error("Namn måste fyllas i!");
       return;
     }
+    // if (!personalNumber.trim()) {
+    //   setPersonalNumber("");
+    // }
 
     createClientMutation.mutate(
       { name, personalNumber },
@@ -57,7 +61,6 @@ export default function ClientCreatePage() {
             type="text"
             value={personalNumber}
             onChange={(e) => setPersonalNumber(e.target.value)}
-            required
             maxLength={12}
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
