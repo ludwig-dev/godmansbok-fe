@@ -55,6 +55,20 @@ export default function SummaryPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen px-4 py-8">
+      {/* if match is true then generate a link to /summaryprint */}
+      {match && (
+        <div className="mt-8 text-center">
+          <a
+            href={`/clients/${cid}/summaryprint?year=${year}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline"
+          >
+            Visa utskriftsvänlig version
+          </a>
+        </div>
+      )}
+
       <div className="max-w-4xl mx-auto space-y-8">
         {/* År‐väljaren */}
         <div className="flex items-center justify-between">
