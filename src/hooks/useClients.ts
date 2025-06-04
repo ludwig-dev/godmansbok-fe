@@ -6,7 +6,7 @@ import api from "../api/client";
 export interface ClientDTO {
   id: number;
   name: string;
-  personalNumber: string;
+  personalNumber?: string;
 }
 
 // Hämta alla klienter (GET /api/clients)
