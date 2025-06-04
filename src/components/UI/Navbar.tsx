@@ -1,4 +1,3 @@
-
 import { Link } from "@tanstack/react-router";
 import { useGodmanProfile } from "../../hooks/useGodman";
 import { useLogout } from "../../hooks/useAuth";
@@ -20,7 +19,7 @@ export function Navbar() {
   };
 
   return (
-    <nav className="bg-gray-800 px-4 py-3">
+    <nav className="bg-gray-800 px-4 py-3 print:hidden">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="space-x-4">
           <Link
