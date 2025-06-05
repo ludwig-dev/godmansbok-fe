@@ -72,20 +72,6 @@ export default function SectionD({
               <td className="border border-gray-400 px-2 py-1">&nbsp;</td>
             </tr>
 
-            {/* Några tomma rader om man vill rita ut fler konton */}
-            <tr className="bg-white">
-              <td className="border border-gray-400 px-2 py-1">&nbsp;</td>
-              <td className="border border-gray-400 px-2 py-1">&nbsp;</td>
-              <td className="border border-gray-400 px-2 py-1">&nbsp;</td>
-              <td className="border border-gray-400 px-2 py-1">&nbsp;</td>
-            </tr>
-            <tr className="bg-white">
-              <td className="border border-gray-400 px-2 py-1">&nbsp;</td>
-              <td className="border border-gray-400 px-2 py-1">&nbsp;</td>
-              <td className="border border-gray-400 px-2 py-1">&nbsp;</td>
-              <td className="border border-gray-400 px-2 py-1">&nbsp;</td>
-            </tr>
-
             {/* Summeringsrad D */}
             <tr className="bg-gray-50">
               <td className="border border-gray-400 px-2 py-1 font-semibold text-right">
