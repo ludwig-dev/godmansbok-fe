@@ -5,7 +5,6 @@ import { Route } from "../../routes/clients/$clientId/liabilities/$liabilityId/r
 import { useLiability, useUpdateLiability } from "../../hooks/useLiabilities";
 
 export default function LiabilityDetailPage() {
-  // Hämta clientId och liabilityId
   const { clientId, liabilityId } = Route.useParams<{
     clientId: string;
     liabilityId: string;
@@ -14,36 +13,28 @@ export default function LiabilityDetailPage() {
   const lid = Number(liabilityId);
   const navigate = useNavigate();
 
-  // Hook för att hämta en enskild skuld
   const { data: liability, isLoading, isError } = useLiability(cid, lid);
-  // Hook för att uppdatera
   const updateLiability = useUpdateLiability(cid, lid);
 
-  // Lokalt state som fylls när `liability` är inläst
   const [creditor, setCreditor] = useState<string>("");
-  const [debtStart, setDebtStart] = useState<string>("0");
-  const [debtEnd, setDebtEnd] = useState<string>("0");
-  const [changeAmount, setChangeAmount] = useState<string>("0");
+  const [debtStart, setDebtStart] = useState<number>(0);
+  const [debtEnd, setDebtEnd] = useState<number>(0);
   const [attachmentNumber, setAttachmentNumber] = useState<string>("");
 
   useEffect(() => {
     if (liability) {
       setCreditor(liability.creditor);
-      setDebtStart(liability.debtStartOfYear.toString());
-      setDebtEnd(liability.debtEndOfYear.toString());
-      setChangeAmount(
-        liability.changeAmount !== null ? liability.changeAmount.toString() : ""
-      );
+      setDebtStart(liability.debtStartOfYear);
+      setDebtEnd(liability.debtEndOfYear);
       setAttachmentNumber(liability.attachmentNumber || "");
     }
   }, [liability]);
 
-  if (isLoading) {
-    return <p className="text-gray-500 py-6">Laddar skuld…</p>;
-  }
-  if (isError || !liability) {
+  if (isLoading) return <p className="text-gray-500 py-6">Laddar skuld…</p>;
+  if (isError || !liability)
     return <p className="text-red-500 py-6">Skulden hittades inte</p>;
-  }
+
+  const changeAmount = parseFloat((debtEnd - debtStart).toFixed(2));
 
   const handleUpdate = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,16 +46,14 @@ export default function LiabilityDetailPage() {
     updateLiability.mutate(
       {
         creditor,
-        debtStartOfYear: Number(debtStart),
-        debtEndOfYear: Number(debtEnd),
-        changeAmount: changeAmount.trim() ? Number(changeAmount) : 0,
+        debtStartOfYear: debtStart,
+        debtEndOfYear: debtEnd,
+        changeAmount,
         attachmentNumber: attachmentNumber.trim() || "",
       },
       {
         onSuccess: () => {
-          // Lägg ev. refetch här (react-query gör det automatiskt),
-          // eller navigera tillbaka:
-          // navigate({ to: `/clients/${cid}/liabilities` });
+          // optionally refetch or navigate
         },
       }
     );
@@ -108,7 +97,7 @@ export default function LiabilityDetailPage() {
             type="number"
             step="0.01"
             value={debtStart}
-            onChange={(e) => setDebtStart(e.target.value)}
+            onChange={(e) => setDebtStart(parseFloat(e.target.value) || 0)}
             required
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
@@ -123,7 +112,7 @@ export default function LiabilityDetailPage() {
             type="number"
             step="0.01"
             value={debtEnd}
-            onChange={(e) => setDebtEnd(e.target.value)}
+            onChange={(e) => setDebtEnd(parseFloat(e.target.value) || 0)}
             required
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
@@ -131,16 +120,15 @@ export default function LiabilityDetailPage() {
 
         <div>
           <label htmlFor="changeAmount" className="block text-gray-700 mb-1">
-            Förändring (kr){" "}
-            <span className="text-sm text-gray-400">(valfritt)</span>
+            Förändring (kr)
           </label>
           <input
             id="changeAmount"
             type="number"
             step="0.01"
             value={changeAmount}
-            onChange={(e) => setChangeAmount(e.target.value)}
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            readOnly
+            className="w-full bg-gray-100 border border-gray-300 rounded px-3 py-2"
           />
         </div>
 
