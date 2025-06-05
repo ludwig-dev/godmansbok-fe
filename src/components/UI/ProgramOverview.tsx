@@ -19,7 +19,7 @@ export default function ProgramOverview() {
       {/* ────────── Kort introduktion ────────── */}
       <p className="text-lg mb-8 text-center max-w-2xl">
         En webbaserad tjänst som hjälper dig som godman att enkelt sköta hela
-        års- och sluträkningen för dina huvudmän.
+        årsräkningen för dina huvudmän.
       </p>
 
       {/* ────────── Punktlista över funktioner ────────── */}
@@ -32,9 +32,8 @@ export default function ProgramOverview() {
         <li>
           <span className="font-medium">Följa tillgångar och skulder:</span>
           Registrera övriga tillgångar (t.ex. fonder, fastigheter, sparkonton)
-          med start- och slutvärde, och spåra förändringar över året. Håll även
-          koll på eventuella skulder och deras förändringar mellan årets början
-          och slut.
+          Håll även koll på eventuella skulder och deras förändringar mellan
+          årets början och slut.
         </li>
         <li>
           <span className="font-medium">
