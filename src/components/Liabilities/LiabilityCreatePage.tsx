@@ -10,16 +10,17 @@ export default function LiabilityCreatePage() {
   const navigate = useNavigate();
   const createLiability = useCreateLiability(cid);
 
-  // Form‐state
-  const [creditor, setCreditor] = useState<string>("");
-  const [debtStart, setDebtStart] = useState<string>("0");
-  const [debtEnd, setDebtEnd] = useState<string>("0");
-  const [changeAmount, setChangeAmount] = useState<string>("0");
-  const [attachmentNumber, setAttachmentNumber] = useState<string>("");
+  // debtStart and debtEnd as numbers
+  const [creditor, setCreditor] = useState("");
+  const [debtStart, setDebtStart] = useState<number>(0);
+  const [debtEnd, setDebtEnd] = useState<number>(0);
+  const [attachmentNumber, setAttachmentNumber] = useState("");
+
+  // compute changeAmount on the fly
+  const changeAmount = parseFloat((debtEnd - debtStart).toFixed(2));
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!creditor.trim()) {
       alert("Långivare måste anges.");
       return;
@@ -28,9 +29,9 @@ export default function LiabilityCreatePage() {
     createLiability.mutate(
       {
         creditor,
-        debtStartOfYear: Number(debtStart),
-        debtEndOfYear: Number(debtEnd),
-        changeAmount: changeAmount.trim() ? Number(changeAmount) : 0,
+        debtStartOfYear: debtStart,
+        debtEndOfYear: debtEnd,
+        changeAmount,
         attachmentNumber: attachmentNumber.trim() || "",
       },
       {
@@ -68,7 +69,7 @@ export default function LiabilityCreatePage() {
             type="number"
             step="0.01"
             value={debtStart}
-            onChange={(e) => setDebtStart(e.target.value)}
+            onChange={(e) => setDebtStart(parseFloat(e.target.value) || 0)}
             required
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
@@ -83,7 +84,7 @@ export default function LiabilityCreatePage() {
             type="number"
             step="0.01"
             value={debtEnd}
-            onChange={(e) => setDebtEnd(e.target.value)}
+            onChange={(e) => setDebtEnd(parseFloat(e.target.value) || 0)}
             required
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
@@ -91,16 +92,15 @@ export default function LiabilityCreatePage() {
 
         <div>
           <label htmlFor="changeAmount" className="block text-gray-700 mb-1">
-            Förändring (kr){" "}
-            <span className="text-sm text-gray-400">(valfritt)</span>
+            Förändring (kr)
           </label>
           <input
             id="changeAmount"
             type="number"
             step="0.01"
             value={changeAmount}
-            onChange={(e) => setChangeAmount(e.target.value)}
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            readOnly
+            className="w-full bg-gray-100 border border-gray-300 rounded px-3 py-2"
           />
         </div>
 
